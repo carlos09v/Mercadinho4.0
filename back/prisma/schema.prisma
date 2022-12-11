@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// gerar SVG
+generator erd {
+  provider = "prisma-erd-generator"
+  theme    = "dark"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Criar Tabelas/Models
+// Usuário
+model User {
+  id String @id @default(cuid()) // // Dizer q é Primary Key - Obs: O Auto Increment ñ é mt seguro
+
+  name      String? // Nullable
+  avatarUrl String?
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  cart Cart[] // Relacionameto Inverso
+}
+
+// Carrinho de Compra
+model Cart {
+  id     String @id @default(cuid())
+  userId String
+
+  productName  String
+  productPrice Float
+  addedAt      DateTime @default(now())
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId])
+}

@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+NP+Hmong:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer components {
+    /* HOME */
+    .headerLink {
+        @apply text-[#111218] dark:text-[#ededed] hover:scale-105 duration-200 inline-block p-2 border rounded-lg border-[#111218] hover:bg-[#f0f8ff5b] dark:border-white
+    }
+
+    .divMain {
+        @apply shadow-md w-[90vw] mt-8 mx-auto p-4 rounded-xl bg-[#f0f8ff70] dark:bg-black/[.65]
+    }
+
+    .divMain h1 {
+        @apply ml-4 text-4xl font-semibold max-w-xs border-b-2
+    }
+
+    /* DASHBOARD */
+    .nav {
+        @apply bg-[#f0f8ff70] dark:bg-black/[.65] shadow-lg border-b-2 border-white/[.09] gap-8
+    }
+    
+    .nav-icon {
+        @apply relative flex items-center justify-center text-2xl h-12 w-12 shadow-lg cursor-pointer bg-gray-800 text-green-500 hover:bg-green-600 hover:text-white
+        rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear
+    }
+
+    #sidebar-logout {
+        @apply text-red-500 mb-8 mt-8
+    }
+
+    #headbar-logout {
+        @apply text-red-500 mr-12
+    }
+
+    #sidebar-logout-tooltip {
+        @apply text-red-500
+    }
+
+    #sidebar-setting {
+        @apply text-gray-400 self-end
+    }
+
+    h1#black {
+        @apply text-[#111218]
+    }
+
+    .sidebar-tooltip {
+        @apply absolute w-auto p-2 m-5 min-w-max left-16 rounded-md shadow-md text-white bg-black/[.9]
+        text-xs font-bold transition-all duration-100 origin-left scale-0
+    }
+
+    .headerbar-tooltip {
+        @apply absolute w-auto p-2 m-5 min-w-max top-16 rounded-md shadow-md text-white bg-black/[.9]
+        text-xs font-bold transition-all duration-100 origin-left scale-0
+    }
+    
+    form > button, .btn {
+        @apply py-2 rounded-2xl border-none text-lg text-white w-[50%] mx-auto font-bold
+    }
+
+    .register-container {
+        @apply w-[90vw] shadow-md max-w-3xl rounded-xl bg-[#f0f8ff70] dark:bg-black/[70%] m-auto p-4
+    }
+
+    .iconTheme {
+        @apply fill-red-500 cursor-pointer hover:scale-110 duration-200 dark:fill-white
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Serif NP Hmong', serif;
+}
+
+body {
+    /* Melhora a renderização no Chrome */
+    --webkit-font-smoothing: antialiased;
+
+    /* https://cssgradient.io/ */
+    background-color: #D9AFD9;
+    background-image: linear-gradient(0deg, #EA3579 0%, #97D9E1 100%);
+
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+ul {
+    list-style: none;
+}
