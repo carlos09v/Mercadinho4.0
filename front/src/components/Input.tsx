@@ -1,4 +1,4 @@
-import { InputProps } from "../@types"
+import { InputProps } from "../@types/web"
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { useState } from "react"
 

@@ -12,14 +12,14 @@ const CreateAccount = () => {
   const [userDataRegister, setUserDataRegister] = useState({ email: '', password: '', confirmPassword: '' })
   const navigate = useNavigate()
 
-  // // Verificar se o Cookie com o Token existe
-  // useEffect(() => {
-  //   const { 'auth.token': token } = parseCookies()
-  //   if (token) {
-  //     navigate('/dashboard')
-  //     toast.success('Você está logado !')
-  //   }
-  // })
+  // Verificar se o Cookie com o Token existe
+  useEffect(() => {
+    const { 'auth.token': token } = parseCookies()
+    if (token) {
+      navigate('/dashboard')
+      toast.success('Você está logado !')
+    }
+  })
 
 
   const handleRegister = async (e: FormEvent) => {
@@ -53,46 +53,44 @@ const CreateAccount = () => {
 
 
   return (
-    <div className="register-container">
-      <div className="max-w-xl w-[80%] mx-auto flex justify-center items-center mb-12 border-b-2 rounded-2xl border-[#111218] dark:border-[#ededed]">
-        <Logo />
-      </div>
+    <div className="flex justify-center items-center min-h-screen">
 
-      <div className="flex items-center justify-center gap-4">
-        <form className="flex flex-col justify-center w-1/2" onSubmit={handleRegister}>
-          <Input
-            id="email"
-            labelName="Email:"
-            placeholder="Digite o seu email..."
-            type="email"
-            onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })}
-          />
-
-          <Input
-            id="password"
-            labelName="Senha:"
-            placeholder="Digite a sua senha..."
-            type="password"
-            onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, password: (e.target as HTMLTextAreaElement).value })}
-          />
-
-          <Input
-            id="confirm_password"
-            labelName="Confirme a sua senha:"
-            placeholder="Confirme a sua senha..."
-            type="password"
-            onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, confirmPassword: (e.target as HTMLTextAreaElement).value })}
-          />
-
-          <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Criar conta</button>
-        </form>
-
-        <div className="w-1/2">
-          <img className="w-full" src={CreateSvg} alt="CreateSvg" />
+      <div className="register-container">
+        <div className="register-header">
+          <Logo />
         </div>
+        <div className="flex items-center justify-center gap-4 h-[350px]">
+          <form className="flex flex-col justify-center w-1/2" onSubmit={handleRegister}>
+            <Input
+              id="email"
+              labelName="Email:"
+              placeholder="Digite o seu email..."
+              type="email"
+              onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })}
+            />
+            <Input
+              id="password"
+              labelName="Senha:"
+              placeholder="Digite a sua senha..."
+              type="password"
+              onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, password: (e.target as HTMLTextAreaElement).value })}
+            />
+            <Input
+              id="confirm_password"
+              labelName="Confirme a sua senha:"
+              placeholder="Confirme a sua senha..."
+              type="password"
+              onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, confirmPassword: (e.target as HTMLTextAreaElement).value })}
+            />
+            <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Criar conta</button>
+          </form>
+          <div className="w-1/2">
+            <img className="w-full" src={CreateSvg} alt="CreateSvg" />
+          </div>
+        </div>
+        <p className="mt-12 text-center dark:text-[#ededed]">Já possui uma conta? <Link className="text-green-600 hover:scale-105 duration-200" to='/login'>Clique aqui para acessar.</Link></p>
       </div>
 
-      <p className="mt-12 text-center dark:text-[#ededed]">Já possui uma conta? <Link className="text-green-600 hover:scale-105 duration-200" to='/login'>Clique aqui para acessar.</Link></p>
     </div>
   )
 }

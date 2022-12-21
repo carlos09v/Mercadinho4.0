@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 
-import { AuthContextDataProps, CartProps, UserProps } from "../@types";
+import { CartProps, UserProps } from "../@types/user";
+import { AuthContextDataProps } from "../@types/auth"; 
 
 
 // Context + Provider
@@ -9,7 +10,7 @@ export const AuthContext = createContext({} as AuthContextDataProps)
 
 //Componente Provider para passar os valores para os Childrens
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [cart, setCart] = useState<CartProps | null>(null)
+    const [cart, setCart] = useState<CartProps[] | null>(null)
     const [user, setUser] = useState<UserProps | null>(null)
 
     // async function signIn({ email, password }: SignInData) {

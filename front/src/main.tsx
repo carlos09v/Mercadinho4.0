@@ -14,11 +14,9 @@ import { themeCheck } from './config/theme'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <AuthProvider>
-      <ToastContainer autoClose={1500} />
-      <RouterProvider router={router} />
-      <ToggleTheme />
-    </AuthProvider>
+    <ToastContainer autoClose={1500} />
+    <RouterProvider router={router} />
+    <ToggleTheme />
   </React.StrictMode>
 )
 

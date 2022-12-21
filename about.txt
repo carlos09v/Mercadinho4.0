@@ -16,6 +16,8 @@
 		2.5 - styled-components (Ñ gostei de usar)
 		2.6 - tailwind css
 		2.7 - nookies
+		2.8 - framer-motion
+		2.9 -> APIS - SendGrid, 
 
 	-- Back-end
 		2.8 - fastify

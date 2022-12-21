@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.2.0",
+    "framer-motion": "^7.6.19",
     "nookies": "^2.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -34,9 +35,11 @@
     "2": "npm i -D tailwindcss postcss autoprefixer",
     "3": "npx tailwindcss init -p",
     "5": "npm i nookies",
-    "6": "npm i @types/cookie -D"
+    "6": "npm i @types/cookie -D",
+    "7": "npm i framer-motion"
   },
   "_comments": {
-    "5": "Criar um cookie pra colocar o token JWT"
+    "5": "Criar um cookie pra colocar o token JWT",
+    "7": "Lib de animações, slides, etc"
   }
 }

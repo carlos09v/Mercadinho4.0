@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import { UserProps } from "../@types"
+import { UserProps } from "../@types/user"
 import { api } from "../lib/axios"
 import Input from "./Input"
 
@@ -81,7 +81,7 @@ const Settings = () => {
         </form>
       </div>
 
-      <button className="btn bg-red-500 hover:bg-red-400 duration-200 !w-[15%] mt-6">Deletar conta</button>
+      <button className="btn bg-red-500 hover:bg-red-400 duration-200 !w-[18%] mt-6">Excluir conta</button>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { destroyCookie } from 'nookies'
 
-import { SideBarIconProps } from "../@types"
+import { SideBarIconProps } from "../@types/web"
 
 const SideBarIcon = ({ icon, text = 'Vazio', to, style, styleTooltip, deleteCookie = false }: SideBarIconProps) => {
   const navigate = useNavigate()
