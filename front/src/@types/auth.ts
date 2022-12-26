@@ -1,12 +1,14 @@
-import { CartProps } from "./user"
+import { Id } from "react-toastify"
+import { CartProps, SignInData, UserProps } from "./user"
 
 // --- AuthProps
 interface AuthContextDataProps {
-    isAuthenticated?: boolean
-    // signIn: (data: SignInData) => Promise<void>
-    user?: UserTokenProps | null
-    cart: CartProps | null
-    setUser?: any
+    signed?: boolean
+    signIn: (data: SignInData) => Promise<void | Id>
+    signOut: () => void
+    user: UserProps | null
+    cart: CartProps[] | null
+    setUser: any
     setCart: any
 }
 

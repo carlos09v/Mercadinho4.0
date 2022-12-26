@@ -1,22 +1,24 @@
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import { UserProps } from "../@types/user"
+import { UserDataDB } from "../@types/user"
+import { AuthContext } from "../contexts/AuthContext"
 import { api } from "../lib/axios"
 import Input from "./Input"
 
 const Settings = () => {
-  const [userDB, setUserDB] = useState<UserProps | null>(null)
-  const [userDataRegister, setUserDataRegister] = useState({ name: '', avatarUrl: '' } || null)
+  const [userDataRegister, setUserDataRegister] = useState<UserDataDB>({ name: '', avatarUrl: '' } || null)
+  const { user, setUser } = useContext(AuthContext)
 
   const getUser = async() => {
     const { data } = await api.get('/me')
-    setUserDB(data.userDB)
+    setUser(data.userDB)
     setUserDataRegister({ name: data.userDB.name, avatarUrl: data.userDB.avatarUrl })
   }
 
   // Pegar o User Atualizado ao entrar no Settings
   useEffect(() => {
-    getUser()
+    // Pra n ter q ficar dando o get toda vez q entrar, coloquei pra ver se existe o user no contexto
+    !user ? getUser() : setUserDataRegister({ name: user.name, avatarUrl: user.avatarUrl })
   }, [])
 
   // Save UserData
@@ -31,7 +33,7 @@ const Settings = () => {
       name: userDataRegister.name,
       avatarUrl: userDataRegister.avatarUrl
     }).then(res => {
-      setUserDB(res.data.user)
+      setUser(res.data.user)
       toast.success(res.data.message)
     }).catch(err => {
       console.log(err)
@@ -44,13 +46,13 @@ const Settings = () => {
 
       <div className="flex mt-8 gap-12 items-center justify-center">
 
-        {userDB?.avatarUrl && (
+        {user?.avatarUrl && (
           <div className="flex flex-col items-center">
             <div className="w-40 h-40 rounded-full bg-gray-300 border-2 border-gray-500 p-1">
-              <img src={userDB.avatarUrl} alt="AvatarUrl" className="w-full rounded-full hover:scale-105 duration-300" />
+              <img src={user.avatarUrl} alt="AvatarUrl" className="w-full rounded-full hover:scale-105 duration-300" />
             </div>
-            {userDB?.name && (
-              <p className="mt-4 font-semibold dark:text-[#ededed]">{userDB.name}</p>
+            {user?.name && (
+              <p className="mt-4 font-semibold dark:text-[#ededed]">{user.name}</p>
             )}
           </div>
         )}

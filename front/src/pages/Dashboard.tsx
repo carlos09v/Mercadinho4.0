@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react"
-
-import { parseCookies } from "nookies"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
 
 import Settings from "../components/Settings"
 import { SideBarIcon, HeaderBarIcon } from "../components/Sidebar"
@@ -20,14 +17,14 @@ const Dashboard = () => {
   const navigate = useNavigate()
   
   // Verificar se o user está autenticado
-  useEffect(() => {
-    // Verificar se o Cookie com o Token existe
-    const { 'auth.token': token } = parseCookies()
-    if (!token) {
-      navigate('/login')
-      toast.error('Você precisa efetuar o login!')
-    }
-  }, [])
+  // useEffect(() => {
+  //   // Verificar se o Cookie com o Token existe
+  //   const { 'auth.token': token } = parseCookies()
+  //   if (!token) {
+  //     navigate('/login')
+  //     toast.error('Você precisa efetuar o login!')
+  //   }
+  // }, [])
 
 
   return (

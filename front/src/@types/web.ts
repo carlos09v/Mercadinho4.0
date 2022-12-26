@@ -14,7 +14,7 @@ interface InputProps {
     id: string
     labelName?: string
     placeholder: string
-    value?: string
+    value?: string | undefined
     type: string
     autoComplete?: string
     maxLength?: number

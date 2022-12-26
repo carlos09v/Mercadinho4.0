@@ -8,8 +8,8 @@ type UserProps = {
 }
 
 type UserDataDB = {
-    name: string
-    avatarUrl: string
+    name: string | undefined
+    avatarUrl: string | undefined
 }
 
 type CartProps = {

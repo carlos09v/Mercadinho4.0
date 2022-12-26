@@ -21,7 +21,7 @@ const Home = () => {
       <HeaderHome />
       
       <main className="divMain max-w-7xl">
-        <div className="flex justify-around items-center justify-center">
+        <div className="flex justify-around items-center">
           <div className="dark:text-[#ededed] text-[#111218] ">
             <h1 className="border-none !text-4xl">Simulando um</h1>
             <h1 className="border-[#111218] dark:border-blue-400 !text-5xl">E-commerce</h1>

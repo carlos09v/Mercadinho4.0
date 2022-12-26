@@ -22,21 +22,25 @@ export const userRoutes = async(fastify: FastifyInstance) => {
         
 
         // Register and get Id
-        const idUser = await prisma.user.create({
-            data: {
-                email,
-                password
-            },
-            select: {
-                id: true
-            }
-        })
+        try {
+            const idUser = await prisma.user.create({
+                data: {
+                    email,
+                    password
+                },
+                select: {
+                    id: true
+                }
+            })
 
-        
-        res.status(201).send({
-            message: 'Usuário cadastrado com sucesso !', 
-            idUser
-        })
+            res.status(201).send({
+                message: 'Usuário cadastrado com sucesso !', 
+                idUser
+            })
+        }catch (e) {
+            res.status(404).send({ message: 'Email ja utilizado/criado !'})
+        }
+
     })
 
     // Update User
@@ -64,4 +68,24 @@ export const userRoutes = async(fastify: FastifyInstance) => {
         res.status(200).send({ user, message: 'Dados salvos com sucesso!' })
     })
 
+    // Forgot Password
+    fastify.post('/forgot-password', async(req, res) => {
+        const createReqBody = z.object({
+            email: z.string().email().trim()
+        })
+        const { email } = createReqBody.parse(req.body)
+
+        // Get Password
+        const passwordUser = await prisma.user.findUnique({
+            where: {
+                email
+            },
+            select: {
+                password: true
+            }
+        })
+        if(!passwordUser) res.status(403).send({ message: 'Email não encontrado !'})
+
+        return { passwordUser }
+    })
 }

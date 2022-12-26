@@ -77,6 +77,10 @@
     .register-header {
         @apply max-w-xl w-[80%] mx-auto flex justify-center items-center mb-12 border-b-2 rounded-2xl border-[#111218] dark:border-[#ededed]
     }
+
+    .modalExterior {
+        @apply bg-white/[30%] dark:bg-black/[30%] fixed top-0 bottom-0 right-0 left-0
+    }
 }
 
 * {

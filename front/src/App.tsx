@@ -1,32 +1,22 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { RouterProvider } from "react-router-dom"
+import { AuthProvider } from "./contexts/AuthContext"
+import AppRouter from "./routes"
+// Toastify
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+// Theme
+import ToggleTheme from './components/ToggleTheme'
 
-import CreateAccount from './pages/CreateAccount'
-import Dashboard from './pages/Dashboard'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Error from './pages/Error'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />
-  },
-  {
-    path: '/create-account',
-    element: <CreateAccount />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/dashboard',
-    element:  <Dashboard />  
-  },
-  {
-    path: '/*',
-    element: <Error />
-  },
-])
+const App = () => {
+  return (
+    <AuthProvider>
+      {/* <RouterProvider router={router} /> */}
+      <AppRouter />
+      <ToastContainer autoClose={1500} />
+      <ToggleTheme />
+    </AuthProvider>
+  )
+}
 
-export { router }
+export default App

@@ -46,8 +46,8 @@ const CreateAccount = () => {
       } else {
         toast.error('Erro ao cadastrar usuário!')
       }
-    } catch (err) {
-      console.log(err)
+    } catch (err: any) {
+      if(err.response) return toast.error(err.response.data.message)
     }
   }
 

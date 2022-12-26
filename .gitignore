@@ -1,3 +1,8 @@
+# BACK-END
+# Keep environment variables out of version control
+.env
+
+# FRONT-END
 # Logs
 logs
 *.log
