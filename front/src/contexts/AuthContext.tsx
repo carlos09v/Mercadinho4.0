@@ -1,9 +1,10 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { CartProps, SignInData, UserProps } from "../@types/user";
 import { AuthContextDataProps } from "../@types/auth";
 import { api } from "../lib/axios";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { toast } from "react-toastify";
+import { CountContext } from "./CountContext";
 
 
 // Context + Provider
@@ -12,8 +13,25 @@ export const AuthContext = createContext({} as AuthContextDataProps)
 
 //Componente Provider para passar os valores para os Childrens
 export function AuthProvider({ children }: { children: ReactNode }) {
+    const { resetCounts } = useContext(CountContext)
     const [cart, setCart] = useState<CartProps[] | null>(null)
     const [user, setUser] = useState<UserProps | null>(null)
+    
+    
+    const getUser = async() => {
+        const { 'auth.token': token } = parseCookies()
+        if(token) {
+            try {
+                const { data } = await api.get('/me')
+                setUser(data.userDB)
+            } catch (err) {
+                console.log(err)
+            }
+        }else {
+            console.log('Não existe token :(')
+        }
+    }
+    
 
     const signIn = async ({ email, password }: SignInData) => {
         // Validar o Email e Senha e Receber o Token JWT e o Cart[] do Back-end
@@ -32,34 +50,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 maxAge: 60 * 60 * 24 // 24 Hours
             })
 
-            data.cart ? setCart(data.cart) : null
+            getUser() // Receber o UserData
         } catch (err: any) {
             if(err.response) return toast.error(err.response.data.message)
         }
-
-        const { 'auth.token': token } = parseCookies()
-        if(token) {
-            // Receber o UserData
-            try {
-                const { data } = await api.get('/me')
-                setUser(data.userDB)
-            } catch (err) {
-                console.log(err)
-            }
-        }else {
-            console.log('Não existe token :(')
-        }
+        
     }
 
     const signOut = () => {
-        destroyCookie(undefined, 'auth.token')
         setUser(null)
         setCart(null)
+        resetCounts()
+        destroyCookie(undefined, 'auth.token')
         // return <Navigate to='/' />
     }
 
     return (
-        <AuthContext.Provider value={{ setCart, cart, user, setUser, signIn, signOut }}>
+        <AuthContext.Provider value={{ setCart, cart, user, setUser, signIn, signOut, getUser }}>
             {children}
         </AuthContext.Provider>
     )

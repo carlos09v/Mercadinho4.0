@@ -17,7 +17,8 @@
 		2.6 - tailwind css
 		2.7 - nookies
 		2.8 - framer-motion
-		2.9 -> APIS - SendGrid, 
+		2.9 - react-modal
+		3. -> APIS - SendGrid(send emails)
 
 	-- Back-end
 		2.8 - fastify
@@ -30,4 +31,4 @@
 
 
 !! Autenticação do lado server (jwt token) e web (cookie) pra ter permissão de fazer requests e acessar páginas
-!! Ñ consegui utilizar o Context API do React que facilitaria pra passar os dados do user pros componentes (Globalizar o userData)
+!! Vite (Env Variables) (import.meta.env.VITE_SOME_KEY)

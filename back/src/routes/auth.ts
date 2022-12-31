@@ -76,12 +76,6 @@ export const authRoutes = async(fastify: FastifyInstance) => {
         })
         const userInfo = userDataSchema.parse(user)
 
-        // Get the Cart from User
-        const cart = await prisma.cart.findUnique({
-            where: {
-                userId: userInfo.id
-            }
-        })
 
         // Gerar Token
         const token = fastify.jwt.sign({
@@ -94,9 +88,6 @@ export const authRoutes = async(fastify: FastifyInstance) => {
             // Refresh Token -> pra ser um Token sem expirar
         })
 
-        res.send({
-            token,
-            cart
-        })
+        return { token }
     })
 }

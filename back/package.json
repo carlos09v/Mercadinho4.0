@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.2.2",
+    "@types/node": "^18.11.18",
     "prisma": "^4.7.1",
     "prisma-erd-generator": "^1.2.4",
     "tsx": "^3.12.1",
@@ -30,7 +31,7 @@
     "0": "npm i fastify @fastify/cors @prisma/client",
     "1": "npm i prisma -D",
     "2": "npx prisma init --datasource-provider SQLite",
-    "3": "npm i typescript tsx -D",
+    "3": "npm i typescript tsx @types/node -D",
     "4": "npx prisma migrate dev",
     "5": "npx prisma studio",
     "6": "npm i prisma-erd-generator @mermaid-js/mermaid-cli -D",

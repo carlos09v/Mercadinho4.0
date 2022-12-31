@@ -74,6 +74,7 @@ const CreateAccount = () => {
               placeholder="Digite a sua senha..."
               type="password"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, password: (e.target as HTMLTextAreaElement).value })}
+              maxLength={20}
             />
             <Input
               id="confirm_password"
@@ -81,6 +82,7 @@ const CreateAccount = () => {
               placeholder="Confirme a sua senha..."
               type="password"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, confirmPassword: (e.target as HTMLTextAreaElement).value })}
+              maxLength={20}
             />
             <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Criar conta</button>
           </form>

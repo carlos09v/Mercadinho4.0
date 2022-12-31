@@ -3,23 +3,23 @@ import { prisma } from '../lib/prisma'
 import { z } from 'zod'
 import { authenticate } from '../plugins/authenticate'
 
-export const userRoutes = async(fastify: FastifyInstance) => {
-    // Contagem de Usuários
-    fastify.get('/users/count', async() => {
+export const userRoutes = async (fastify: FastifyInstance) => {
+    // Contagem de Usuários criados
+    fastify.get('/users/count', async () => {
         const count = await prisma.user.count()
 
         return { count }
     })
 
     // Create User
-    fastify.post('/create-account', async(req, res) => {
+    fastify.post('/create-account', async (req, res) => {
         // Validar os dados pra ser tratado antes de enviar pro DB (utilizando o zod)
         const createUserBody = z.object({
             email: z.string().email().trim(),
             password: z.string().min(6, 'A senha precisa ter no minimo 6 caracteres').max(20, 'A senha precisa ter até 20 caracteres !').trim()
         })
         const { email, password } = createUserBody.parse(req.body)
-        
+
 
         // Register and get Id
         try {
@@ -34,11 +34,11 @@ export const userRoutes = async(fastify: FastifyInstance) => {
             })
 
             res.status(201).send({
-                message: 'Usuário cadastrado com sucesso !', 
+                message: 'Usuário cadastrado com sucesso !',
                 idUser
             })
-        }catch (e) {
-            res.status(404).send({ message: 'Email ja utilizado/criado !'})
+        } catch (e) {
+            res.status(404).send({ message: 'Email ja utilizado/criado !' })
         }
 
     })
@@ -46,7 +46,7 @@ export const userRoutes = async(fastify: FastifyInstance) => {
     // Update User
     fastify.put('/update-user', {
         onRequest: [authenticate]
-    }, async(req, res) => {
+    }, async (req, res) => {
         // Validar os dados pra ser tratado antes de enviar pro DB (utilizando o zod)
         const createUserUpdateBody = z.object({
             name: z.string().max(20).trim(),
@@ -69,7 +69,7 @@ export const userRoutes = async(fastify: FastifyInstance) => {
     })
 
     // Forgot Password
-    fastify.post('/forgot-password', async(req, res) => {
+    fastify.post('/forgot-password', async (req, res) => {
         const createReqBody = z.object({
             email: z.string().email().trim()
         })
@@ -84,7 +84,7 @@ export const userRoutes = async(fastify: FastifyInstance) => {
                 password: true
             }
         })
-        if(!passwordUser) res.status(403).send({ message: 'Email não encontrado !'})
+        if (!passwordUser) res.status(403).send({ message: 'Email não encontrado !' })
 
         return { passwordUser }
     })

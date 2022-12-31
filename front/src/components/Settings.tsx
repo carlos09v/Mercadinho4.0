@@ -83,7 +83,7 @@ const Settings = () => {
         </form>
       </div>
 
-      <button className="btn bg-red-500 hover:bg-red-400 duration-200 !w-[18%] mt-6">Excluir conta</button>
+      <button className="btn bg-red-500 !w-[18%] mt-6">Excluir conta</button>
     </div>
   )
 }

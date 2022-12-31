@@ -14,7 +14,7 @@ type UserDataDB = {
 
 type CartProps = {
     productName: string
-    procuctPrice: number
+    productPrice: string
 }
 
 type SignInData = {
