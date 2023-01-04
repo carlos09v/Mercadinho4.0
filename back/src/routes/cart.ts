@@ -16,9 +16,12 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
         onRequest: [authenticate]
     }, async(req) => {
         // Get the Cart from User
-        const cart = await prisma.cart.findUnique({
+        const { cart } = await prisma.user.findUnique({
             where: {
-                userId: req.user.sub
+                email: req.user.email
+            },
+            select: {
+                cart: true
             }
         })
 

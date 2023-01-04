@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer components {
+    /* HOME */
+    .headerLink {
+        @apply text-[#111218] dark:text-[#ededed] hover:scale-105 duration-200 inline-block p-2 border rounded-lg border-[#111218] hover:bg-[#f0f8ff5b] dark:border-blue-400
+    }
+}

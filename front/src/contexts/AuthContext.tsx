@@ -31,6 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             console.log('Não existe token :(')
         }
     }
+
+    const getCart = async() => {
+
+    }
     
 
     const signIn = async ({ email, password }: SignInData) => {
@@ -66,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ setCart, cart, user, setUser, signIn, signOut, getUser }}>
+        <AuthContext.Provider value={{ getCart, cart, user, signIn, signOut, getUser, setUser }}>
             {children}
         </AuthContext.Provider>
     )

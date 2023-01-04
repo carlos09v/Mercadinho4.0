@@ -1,24 +1,43 @@
-import { FormEvent, useContext, useEffect, useState } from "react"
+import { FormEvent, useContext, useEffect, useLayoutEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { UserDataDB } from "../@types/user"
+import { SibeBarRefs } from "../@types/web"
 import { AuthContext } from "../contexts/AuthContext"
 import { api } from "../lib/axios"
 import Input from "./Input"
 
-const Settings = () => {
-  const [userDataRegister, setUserDataRegister] = useState<UserDataDB>({ name: '', avatarUrl: '' } || null)
+const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
+  const [userDataRegister, setUserDataRegister] = useState<UserDataDB>({ name: '', avatarUrl: '' })
   const { user, setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
 
-  const getUser = async() => {
-    const { data } = await api.get('/me')
-    setUser(data.userDB)
-    setUserDataRegister({ name: data.userDB.name, avatarUrl: data.userDB.avatarUrl })
-  }
 
   // Pegar o User Atualizado ao entrar no Settings
   useEffect(() => {
     // Pra n ter q ficar dando o get toda vez q entrar, coloquei pra ver se existe o user no contexto
-    !user ? getUser() : setUserDataRegister({ name: user.name, avatarUrl: user.avatarUrl })
+    // if(user) {
+    //   setUserDataRegister({ name: user.name, avatarUrl: user.avatarUrl })
+    // }else {
+    //   navigate(0)
+    // }
+
+  }, [])
+
+  // useLayoutEffect => You only want to use this hook when you need to do any DOM changes directly.
+  // This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
+  useLayoutEffect(() => {
+    // SideBar
+    if (localStorage.getItem('sidebar') === 'aside') {
+      asideRef.current?.classList.remove('hidden')
+      headerRef.current?.classList.add('hidden')
+    }
+
+    // Hide IconPrint from Sidebar
+    if(headerIconPrintRef?.current?.style.display === 'block' || asideIconPrintRef?.current?.style.display === 'block') {
+      if(headerIconPrintRef.current) headerIconPrintRef.current.style.display = 'none'
+      if(asideIconPrintRef.current) asideIconPrintRef.current.style.display = 'none'
+    }  
   }, [])
 
   // Save UserData
@@ -79,11 +98,44 @@ const Settings = () => {
             onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, avatarUrl: (e.target as HTMLTextAreaElement).value })}
           />
 
-          <button type="submit" className="bg-green-500 hover:bg-green-400 duration-200">Enviar</button>
+          <button type="submit" className="bg-green-600 hover:bg-green-500 duration-200">Enviar</button>
         </form>
       </div>
 
-      <button className="btn bg-red-500 !w-[18%] mt-6">Excluir conta</button>
+      <hr className="my-6 bg-purple-500" />
+
+      <div className="flex justify-around text-[#111218] dark:text-[#ededed] p-2">
+        <div className="border-r-2 border-[#111218] dark:border-[#ededed] w-[50%]">
+          <h2 className="text-center mb-4 max-w-[200px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl">Interface:</h2>
+          <div className="flex gap-8 border border-black dark:border-blue-400 bg-purple-400 dark:bg-blue-600/70 p-3 rounded font-bold items-center justify-center max-w-sm mx-auto">
+            <div className="flex flex-col items-center gap-3">
+              <label htmlFor="setHeaderBar">Barra Superior</label>
+              <input type="radio" name="radioSettings" id="setHeaderBar" defaultChecked={localStorage.getItem('sidebar') === 'header' ? true : false} onChange={() => {
+                asideRef.current?.classList.add('hidden')
+                headerRef.current?.classList.remove('hidden')
+                localStorage.setItem('sidebar', 'header')
+              }} />
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <label htmlFor="setSideBar">Barra Lateral</label>
+              <input type="radio" name="radioSettings" id="setSideBar" defaultChecked={localStorage.getItem('sidebar') === 'aside' ? true : false} onChange={() => {
+                headerRef.current?.classList.add('hidden')
+                asideRef.current?.classList.remove('hidden')
+                localStorage.setItem('sidebar', 'aside')
+              }} />
+            </div>
+          </div>
+
+        </div>
+
+        <div className="w-[50%] ml-4">
+          <h2 className="mb-4 max-w-[220px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl text-center">Privacidade:</h2>
+          <button className="btn bg-red-500 !w-[40%] !text-base mx-auto block">Excluir conta</button>
+        </div>
+      </div>
+
+
     </div>
   )
 }

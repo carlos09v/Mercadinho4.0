@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Img1 from '../assets/3.jpg'
 import HomeSvg from '../assets/sweet_home.svg'
 import { CountContext } from "../contexts/CountContext"
+import './Home.css'
 
 const Home = () => {
   const images = [Img1, Img1, Img1, Img1, Img1, Img1]
@@ -14,8 +15,8 @@ const Home = () => {
 
   useEffect(() => {
     if(!countUser || !countCart ) {
-      getUsersCount()
-      getCartsCount()
+      // getUsersCount()
+      // getCartsCount()
     }
   }, [])
 
@@ -41,8 +42,8 @@ const Home = () => {
             <h1 className="border-[#111218] dark:border-blue-400 !text-5xl">E-commerce</h1>
             
             <div className="flex gap-3 mt-6 font-semibold">
-              <p className="button-85">Contas criadas: <span className="text-xl ml-2 text-green-500 underline">{countUser}</span></p>
-              <p className="button-85">Carrinhos criados: <span className="text-xl ml-2 text-green-500 underline">{countCart}</span></p>
+              <p className="button-85">Contas criadas: <span className="text-2xl ml-3 bg-clip-text text-transparent bg-gradient-to-b from-green-500 to-[#FFB03A]">{countUser}</span></p>
+              <p className="button-85">Produtos criados: <span className="text-2xl ml-3 bg-clip-text text-transparent bg-gradient-to-b from-green-500 to-[#FFB03A]">{countCart}</span></p>
             </div>
           </div>
           

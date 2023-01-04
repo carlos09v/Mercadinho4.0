@@ -12,8 +12,9 @@ type SideBarIconProps = {
 
 interface InputProps {
     id: string
+    name?: string
     labelName?: string
-    placeholder: string
+    placeholder?: string
     value?: string | number | undefined
     type: string
     step?: string
@@ -36,4 +37,11 @@ interface CountContextProps {
     resetCounts: () => void
 }
 
-export type { SideBarIconProps, InputProps, CountContextProps }
+type SibeBarRefs = {
+    asideRef: React.RefObject<HTMLDivElement>
+    headerRef: React.RefObject<HTMLDivElement>
+    asideIconPrintRef: React.RefObject<HTMLButtonElement>
+    headerIconPrintRef: React.RefObject<HTMLButtonElement>
+}
+
+export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps }

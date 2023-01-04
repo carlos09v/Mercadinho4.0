@@ -7,9 +7,10 @@ import { MdShoppingCart } from 'react-icons/md'
 import Input from "./Input"
 import { CountContext } from "../contexts/CountContext"
 import { AuthContext } from "../contexts/AuthContext"
+import { SibeBarRefs } from "../@types/web"
 
 
-const Shop = () => {
+const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
@@ -27,10 +28,10 @@ const Shop = () => {
   
   useEffect(() => {
     if(!user) {
-      getUser()
+      // getUser()
     }
     if(!productsCount) {
-      getProductsUserCount()
+      // getProductsUserCount()
     }
   },[])
 
@@ -43,6 +44,20 @@ const Shop = () => {
     if(carousel?.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
     }
+
+    // Colocar o sidebar type no localstorage caso ñ tenha
+    if(!localStorage.getItem('sidebar')){
+      localStorage.setItem('sidebar', 'header')
+    }else if (localStorage.getItem('sidebar') === 'aside') {
+      asideRef.current?.classList.remove('hidden')
+      headerRef.current?.classList.add('hidden')
+    }
+
+    // Hide IconPrint from Sidebar
+    if(headerIconPrintRef?.current?.style.display === 'block' || asideIconPrintRef?.current?.style.display === 'block') {
+      if(headerIconPrintRef.current) headerIconPrintRef.current.style.display = 'none'
+      if(asideIconPrintRef.current) asideIconPrintRef.current.style.display = 'none'
+    } 
   }, [])
 
   const getDataAPI = async(e: FormEvent) => {
@@ -75,7 +90,7 @@ const Shop = () => {
   }
 
   return (
-    <div className="divMain flex flex-col  justify-center items-center max-w-4xl">
+    <div className="divMain flex flex-col items-center max-w-4xl">
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
       <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">Bem-vindo(a) 😁 !</h1>
 
@@ -183,13 +198,14 @@ const Shop = () => {
         </form>
       </div>
 
-      
+      {productsCount && (
         <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1">
           <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span> 
           <div className="flex gap-2 items-center">
             Ver carrinho <MdShoppingCart />
           </div>
         </button>
+      )}
      
     </div>
   )
