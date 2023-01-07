@@ -13,8 +13,11 @@ type UserDataDB = {
 }
 
 type CartProps = {
+    id: string
+    userId: string
     productName: string
     productPrice: string
+    addedAt: string
 }
 
 type SignInData = {

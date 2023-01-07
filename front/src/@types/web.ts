@@ -38,10 +38,11 @@ interface CountContextProps {
 }
 
 type SibeBarRefs = {
-    asideRef: React.RefObject<HTMLDivElement>
-    headerRef: React.RefObject<HTMLDivElement>
+    asideRef?: React.RefObject<HTMLDivElement>
+    headerRef?: React.RefObject<HTMLDivElement>
     asideIconPrintRef: React.RefObject<HTMLButtonElement>
     headerIconPrintRef: React.RefObject<HTMLButtonElement>
+    setToggleStage?: (value: React.SetStateAction<string>) => void
 }
 
 export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps }

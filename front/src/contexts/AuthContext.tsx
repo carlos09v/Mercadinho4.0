@@ -33,7 +33,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const getCart = async() => {
-
+        const { data } = await api.get('/cartUser')
+        setCart(data.cart)
     }
     
 
@@ -70,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ getCart, cart, user, signIn, signOut, getUser, setUser }}>
+        <AuthContext.Provider value={{ getCart, cart, user, signIn, signOut, getUser, setUser, setCart }}>
             {children}
         </AuthContext.Provider>
     )

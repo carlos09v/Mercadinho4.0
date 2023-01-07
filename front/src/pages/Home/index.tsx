@@ -1,14 +1,14 @@
-import HeaderHome from "../components/HeaderHome"
+import HeaderHome from "../../components/HeaderHome"
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from "react"
 import { motion } from 'framer-motion'
 
-import Img1 from '../assets/3.jpg'
-import HomeSvg from '../assets/sweet_home.svg'
-import { CountContext } from "../contexts/CountContext"
+import { toys2Img, foodImg, headphoneImg ,shampoosImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, patinsImg } from '../../assets/HomeGallery'
+import HomeSvg from '../../assets/sweet_home.svg'
+import { CountContext } from "../../contexts/CountContext"
 import './Home.css'
 
 const Home = () => {
-  const images = [Img1, Img1, Img1, Img1, Img1, Img1]
+  const images = [toys2Img, foodImg, headphoneImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, shampoosImg, patinsImg]
   const carousel = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const { countCart, countUser, getCartsCount, getUsersCount } = useContext(CountContext)
@@ -55,10 +55,10 @@ const Home = () => {
 
 
         {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
-        <motion.div ref={carousel} whileTap={{ cursor: 'grabbing' }} className="cursor-grab overflow-hidden">
+        <motion.div ref={carousel} whileTap={{ cursor: 'grabbing' }} className="cursor-grab overflow-hidden mt-6">
           <motion.div className="flex items-center justify-center mx-auto" drag='x' dragConstraints={{ right: 0, left: -width }} initial={{ x: 100 }} animate={{ x: 0 }} transition={{ duration: .8 }}>
             {images.map((img, i) => (
-              <motion.div key={i} className="min-h-[200px] min-w-[300px] p-4">
+              <motion.div key={i} className="h-[250px] min-w-[300px] p-4">
                 <img className="w-full h-[90%] rounded-xl pointer-events-none" src={img} alt="Carrossel Items" />
               </motion.div>
             ))}

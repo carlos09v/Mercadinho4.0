@@ -14,6 +14,7 @@ import './Dashboard.css'
 const Dashboard = () => {
   // NÃO CONSIGO USAR O CONTEXT
   // Obs: Uso o setUser e retorna o user null
+  // Res => precisava prover (provider) pra aplicação
   const STAGES = ['Settings', 'Shop', 'Cart']
   const [toggleStage, setToggleStage] = useState(STAGES[1])
   const asideRef = useRef<HTMLDivElement>(null)
@@ -24,7 +25,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <aside ref={asideRef} className="nav fixed top-0 left-0 h-screen px-4 flex flex-col border-r-2 hidden">
+      <aside ref={asideRef} className="nav fixed top-0 left-0 h-screen px-4 flex flex-col border-r-2">
         <SideBarIcon deleteCookie={true} style="sidebar-logout" styleTooltip="sidebar-logout-tooltip" icon={<BiLogOut />} text='SAIR' to="/" />
         <SideBarIcon icon={<FiHome />} text='Home' to="/" />
         <button onClick={() => setToggleStage(STAGES[1])}>
@@ -59,8 +60,8 @@ const Dashboard = () => {
       </header>
 
       {toggleStage === STAGES[0] && <Settings asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
-      {toggleStage === STAGES[1] && <Shop asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
-      {toggleStage === STAGES[2] && <Cart asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
+      {toggleStage === STAGES[1] && <Shop asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} setToggleStage={setToggleStage} />}
+      {toggleStage === STAGES[2] && <Cart headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
 
     </div>
   )

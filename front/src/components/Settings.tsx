@@ -4,35 +4,29 @@ import { toast } from "react-toastify"
 import { UserDataDB } from "../@types/user"
 import { SibeBarRefs } from "../@types/web"
 import { AuthContext } from "../contexts/AuthContext"
+import { AiFillCloseSquare } from "react-icons/ai"
+import Modal from 'react-modal'
+Modal.setAppElement('#root')
 import { api } from "../lib/axios"
 import Input from "./Input"
 
 const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
   const [userDataRegister, setUserDataRegister] = useState<UserDataDB>({ name: '', avatarUrl: '' })
-  const { user, setUser } = useContext(AuthContext)
+  const [confirmEmail, setConfirmEmail] = useState('')
+  const { user, setUser, signOut } = useContext(AuthContext)
+  const [showModal, setShowModal] = useState(false)
   const navigate = useNavigate()
 
 
   // Pegar o User Atualizado ao entrar no Settings
   useEffect(() => {
     // Pra n ter q ficar dando o get toda vez q entrar, coloquei pra ver se existe o user no contexto
-    // if(user) {
-    //   setUserDataRegister({ name: user.name, avatarUrl: user.avatarUrl })
-    // }else {
-    //   navigate(0)
-    // }
-
+    user ? setUserDataRegister({ name: user.name, avatarUrl: user.avatarUrl }) : navigate(0)
   }, [])
 
   // useLayoutEffect => You only want to use this hook when you need to do any DOM changes directly.
   // This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
   useLayoutEffect(() => {
-    // SideBar
-    if (localStorage.getItem('sidebar') === 'aside') {
-      asideRef.current?.classList.remove('hidden')
-      headerRef.current?.classList.add('hidden')
-    }
-
     // Hide IconPrint from Sidebar
     if(headerIconPrintRef?.current?.style.display === 'block' || asideIconPrintRef?.current?.style.display === 'block') {
       if(headerIconPrintRef.current) headerIconPrintRef.current.style.display = 'none'
@@ -57,6 +51,22 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
     }).catch(err => {
       console.log(err)
     })
+  }
+
+  // Delete Account
+  const deleteAccountBtn = async(e: FormEvent) => {
+    e.preventDefault()
+    if(confirmEmail === '') return toast.warn('Preencha o campo !')
+
+    try {
+      const { data } = await api.delete(`/delete-user/${confirmEmail}`)
+
+      toast.success(data.message)
+      signOut()
+      navigate('/')
+    }catch (err: any) {
+      if(err.response) return toast.error(err.response.data.message)
+    }
   }
 
   return (
@@ -111,8 +121,8 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
             <div className="flex flex-col items-center gap-3">
               <label htmlFor="setHeaderBar">Barra Superior</label>
               <input type="radio" name="radioSettings" id="setHeaderBar" defaultChecked={localStorage.getItem('sidebar') === 'header' ? true : false} onChange={() => {
-                asideRef.current?.classList.add('hidden')
-                headerRef.current?.classList.remove('hidden')
+                asideRef?.current?.classList.add('hidden')
+                headerRef?.current?.classList.remove('hidden')
                 localStorage.setItem('sidebar', 'header')
               }} />
             </div>
@@ -120,8 +130,8 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
             <div className="flex flex-col items-center gap-3">
               <label htmlFor="setSideBar">Barra Lateral</label>
               <input type="radio" name="radioSettings" id="setSideBar" defaultChecked={localStorage.getItem('sidebar') === 'aside' ? true : false} onChange={() => {
-                headerRef.current?.classList.add('hidden')
-                asideRef.current?.classList.remove('hidden')
+                headerRef?.current?.classList.add('hidden')
+                asideRef?.current?.classList.remove('hidden')
                 localStorage.setItem('sidebar', 'aside')
               }} />
             </div>
@@ -131,9 +141,22 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
 
         <div className="w-[50%] ml-4">
           <h2 className="mb-4 max-w-[220px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl text-center">Privacidade:</h2>
-          <button className="btn bg-red-500 !w-[40%] !text-base mx-auto block">Excluir conta</button>
+          <button className="btn bg-red-500 !w-[40%] !text-base mx-auto block" onClick={() => setShowModal(true)}>Excluir conta</button>
         </div>
       </div>
+
+      {/* Confirm Delete Account Modal */}
+      <Modal isOpen={showModal} overlayClassName='modalExterior' className='modalInterior'>
+        <AiFillCloseSquare className="modalIconClose" onClick={() => setShowModal(false)} />
+        <form onSubmit={deleteAccountBtn}>
+          <p className="dark:text-blue-500 text-purple-500 font-semibold mb-4 text-lg">Tem certeza que deseja excluir sua conta ?</p>
+          <div className="flex gap-3 items-center">
+            <label htmlFor="emailDeleteAccount" className="dark:text-white">Email:</label>
+            <input type="email" id="emailDeleteAccount" placeholder="Insira o seu email para confirmar..." className="p-3 rounded-2xl w-full bg-gray-200 dark:bg-white" onChange={(e: FormEvent) => setConfirmEmail((e.target as HTMLTextAreaElement).value) } />
+          </div>
+          <button className="btn bg-red-500 mx-auto block mt-4" type="submit">Excluir</button>
+        </form>
+      </Modal>
 
 
     </div>

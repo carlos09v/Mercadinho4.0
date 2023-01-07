@@ -1,7 +1,7 @@
 import { createBrowserRouter, BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import CreateAccount from '../pages/CreateAccount'
-import Dashboard from '../pages/Dashboard/Dashboard'
+import Dashboard from '../pages/Dashboard'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Error from '../pages/Error'

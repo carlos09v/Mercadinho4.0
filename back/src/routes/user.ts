@@ -84,8 +84,41 @@ export const userRoutes = async (fastify: FastifyInstance) => {
                 password: true
             }
         })
-        if (!passwordUser) res.status(403).send({ message: 'Email não encontrado !' })
+        if (!passwordUser) res.status(404).send({ message: 'Email não encontrado !' })
 
         return { passwordUser }
+    })
+
+    // Delete Account
+    fastify.delete('/delete-user/:email', {
+        onRequest: [authenticate]
+    }, async(req, res) => {
+        const emailParams = z.object({
+            email: z.string().email()
+        })
+        const { email } = emailParams.parse(req.params)
+
+        if(email !== req.user.email) res.status(404).send({ message: 'Email Incorreto ou não existe !'})
+
+        try {
+            const deleteCart = prisma.cart.deleteMany({
+                where: {
+                    userId: req.user.sub
+                }
+            })
+
+            const deleteUser = prisma.user.delete({
+                where: {
+                    email
+                }
+            })
+
+            // Deletar ao mesmo tempo o (cart e user) se ñ da erro
+            await prisma.$transaction([deleteCart, deleteUser])
+
+            res.status(200).send({ message: 'Conta deletada com sucesso !'})
+        }catch (err) {
+            console.log(err)
+        }
     })
 }

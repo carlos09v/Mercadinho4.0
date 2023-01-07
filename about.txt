@@ -1,5 +1,5 @@
 			# Mercadinho 4.0
-		# Projeto realizado em Dezembro de 2022
+		# Projeto realizado entre Dezembro/2022 e Janeiro/2023
 
 1. Tools
 	1.1 - Vite (Build for Production + Plugins(Uglify, Babel, Concat))

@@ -10,13 +10,13 @@ import { AuthContext } from "../contexts/AuthContext"
 import { SibeBarRefs } from "../@types/web"
 
 
-const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
+const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
-  const [cartDataRegister, setCartDataRegister] = useState<CartProps>({ productName: '', productPrice: '' })
+  const [cartDataRegister, setCartDataRegister] = useState({ productName: '', productPrice: '' })
   const { productsCount, getProductsUserCount } = useContext(CountContext)
-  const { user, getUser } = useContext(AuthContext)
+  const { user, getUser, setCart } = useContext(AuthContext)
   
 
   const carousel = useRef<HTMLDivElement>(null)
@@ -28,10 +28,10 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: Si
   
   useEffect(() => {
     if(!user) {
-      // getUser()
+      getUser()
     }
     if(!productsCount) {
-      // getProductsUserCount()
+      getProductsUserCount()
     }
   },[])
 
@@ -49,8 +49,10 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: Si
     if(!localStorage.getItem('sidebar')){
       localStorage.setItem('sidebar', 'header')
     }else if (localStorage.getItem('sidebar') === 'aside') {
-      asideRef.current?.classList.remove('hidden')
-      headerRef.current?.classList.add('hidden')
+      asideRef?.current?.classList.remove('hidden')
+      headerRef?.current?.classList.add('hidden')
+    }else {
+      asideRef?.current?.classList.add('hidden')
     }
 
     // Hide IconPrint from Sidebar
@@ -68,6 +70,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: Si
     
   }
 
+  // Register Product
   const handleCartRegister = async(e: FormEvent) => {
     e.preventDefault()
 
@@ -83,6 +86,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: Si
 
       toast.success(data.message)
       getProductsUserCount()
+      setCart(null) // Resetar o setCart pra ele fazer outra request qndo entrar no cart
       setCartDataRegister({ productPrice: '', productName: '' })
     }catch (err) {
       console.log(err)
@@ -199,7 +203,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }: Si
       </div>
 
       {productsCount && (
-        <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1">
+        <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1" onClick={() => setToggleStage !== undefined ? setToggleStage('Cart') : null}>
           <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span> 
           <div className="flex gap-2 items-center">
             Ver carrinho <MdShoppingCart />

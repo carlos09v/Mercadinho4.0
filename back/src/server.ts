@@ -19,7 +19,7 @@ async function bootstrap() {
 
     // Em produção isso precisa ser uma variável ambiente
     await fastify.register(jwt, {
-        secret: process.env.SECRET_KEY
+        secret: process.env.JWT_SECRET_KEY
     })
 
     // http://localhost:3333

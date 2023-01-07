@@ -46,6 +46,8 @@ const Login = () => {
     e.preventDefault()
     let senha: string
 
+    if(emailUser === '') return toast.warn('Preencha o campo !')
+
     api.post('/forgot-password', {
         email: emailUser
     }).then(res => {
@@ -99,11 +101,14 @@ const Login = () => {
 
       
       {/* Forgot Password Modal */}
-      <Modal isOpen={showModal} overlayClassName="modalExterior" className="w-[90%] max-w-[800px] bg-white dark:bg-black/95 p-2 rounded-2xl m-auto h-[300px] flex items-center justify-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#F50057] dark:border-blue-400">
-        <AiFillCloseSquare className="duration-200 hover:fill-black/60 dark:fill-white dark:hover:fill-white/80 cursor-pointer absolute top-2 right-2 text-4xl" onClick={() => setShowModal(false)} />
+      <Modal isOpen={showModal} overlayClassName="modalExterior" className="modalInterior">
+        <AiFillCloseSquare className="modalIconClose" onClick={() => setShowModal(false)} />
       
         <form onSubmit={e => sendEmail(e, userDataRegister.email)} className="flex flex-col gap-4 w-[500px]">
-          <input type="email" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full bg-gray-200 placeholder:text-blue-600 dark:placeholder:text-blue-500" onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })} value={userDataRegister.email} />
+          <div className="flex gap-3 items-center">
+            <label htmlFor="sendEmailInput" className="font-semibold dark:text-white">Email:</label>
+            <input type="email" id="sendEmailInput" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full bg-gray-200 dark:bg-white dark:placeholder:text-blue-400" onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })} />
+          </div>
           <button className="bg-[#F50057] hover:bg-[#f50056d7] duration-200" type="submit">Enviar</button>
         </form>
       </Modal>
