@@ -33,32 +33,15 @@
 
     /* Modal */
     .modalExterior {
-        @apply bg-white/[40%] dark:bg-black/[35%] fixed top-0 bottom-0 right-0 left-0
+        @apply bg-white/40 dark:bg-black/[35%] fixed top-0 bottom-0 right-0 left-0
     }
 
     .modalInterior {
-        @apply w-[90%] max-w-[800px] bg-white dark:bg-black/95 p-2 rounded-2xl m-auto h-[300px] flex items-center justify-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#F50057] dark:border-blue-400
+        @apply w-[90%] max-w-[800px] bg-slate-100 dark:bg-slate-800 p-2 rounded-2xl m-auto min-h-[300px] max-h-[600px] flex items-center justify-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border border-[#F50057] dark:border-blue-400
     }
 
     .modalIconClose {
         @apply duration-200 hover:fill-black/60 dark:fill-white dark:hover:fill-white/80 cursor-pointer absolute top-2 right-2 text-4xl
-    }
-
-    /* Table Cart */
-    th, td {
-        @apply py-3 px-4
-    }
-
-    tr {
-        @apply border-b border-[#dddddd] 
-    }
-
-    tr:nth-of-type(even) {
-        @apply bg-white/40 dark:bg-transparent
-    }
-
-    tr:last-of-type {
-        @apply border-b-2 border-purple-400 dark:border-blue-700
     }
 }
 
@@ -140,97 +123,4 @@ input[type=radio]:checked {
     100% {
         outline-offset: -0.2rem;
     }
-}
-
-
-/* CSS - Button Home */
-/* https://getcssscan.com/css-buttons-examples */
-.button-85 {
-    padding: 0.6em 2em;
-    border: none;
-    outline: none;
-    color: rgb(255, 255, 255);
-    background: #111;
-    position: relative;
-    z-index: 0;
-    border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-
-.button-85:before {
-    content: "";
-    background: linear-gradient(45deg,
-            #ff0000,
-            #ff7300,
-            #fffb00,
-            #48ff00,
-            #00ffd5,
-            #002bff,
-            #7a00ff,
-            #ff00c8,
-            #ff0000);
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing-button-85 20s linear infinite;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-}
-
-@keyframes glowing-button-85 {
-    0% {
-        background-position: 0 0;
-    }
-
-    50% {
-        background-position: 400% 0;
-    }
-
-    100% {
-        background-position: 0 0;
-    }
-}
-
-.button-85:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-}
-
-/* CSS - Button Go To Cash */
-.button-41 {
-  background-color: initial;
-  background-image: linear-gradient(-180deg, #00D775, #00BD68);
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
-  height: 44px;
-  line-height: 44px;
-  outline: 0;
-  padding: 0 20px;
-  pointer-events: auto;
-  user-select: none;
-  -webkit-user-select: none;
-  border: 0;
-}
-
-.button-41:hover {
-  background: #00bd68;
 }

@@ -37,7 +37,7 @@ export function CountProvider({ children }: { children: ReactNode }) {
 
 
     return (
-        <CountContext.Provider value={{ countUser, countCart, getCartsCount, getUsersCount, getProductsUserCount, productsCount, resetCounts }}>
+        <CountContext.Provider value={{ countUser, countCart, getCartsCount, getUsersCount, getProductsUserCount, productsCount, resetCounts, setProductsCount }}>
             {children}
         </CountContext.Provider>
     )

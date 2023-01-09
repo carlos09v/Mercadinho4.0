@@ -6,6 +6,7 @@ import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Error from '../pages/Error'
 import { PrivateRoutes } from './privateRoutes'
+import Payout from '../pages/Payout'
 
 
 // const router = createBrowserRouter([
@@ -41,9 +42,14 @@ const AppRouter = () => {
         <Route path='/create-account' element={<CreateAccount />} />
         <Route path='/login' element={<Login />} />
 
+        {/* Private Routes */}
         <Route path='/dashboard' element={<PrivateRoutes />}>
           <Route path='/dashboard' element={<Dashboard />}></Route>
         </Route>
+        <Route path='/payout' element={<PrivateRoutes />}>
+          <Route path='/payout' element={<Payout />}></Route>
+        </Route>
+
         <Route path='*' element={<Error />} />
       </Routes>
     </BrowserRouter>

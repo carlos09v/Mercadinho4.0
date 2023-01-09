@@ -70,4 +70,27 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
         }
 
     })
+
+    // Delete Product
+    fastify.delete('/delete-product/:productId', {
+        onRequest: [authenticate]
+    }, async(req, res) => {
+        const idParams = z.object({
+            productId: z.string().cuid()
+        })
+        const { productId } = idParams.parse(req.params)
+
+        try {
+            await prisma.cart.delete({
+                where: {
+                    id: productId
+                }
+            })
+
+            res.status(200).send({ message: 'Produto apagado/excluido !'})
+        }catch (err) {
+            console.log(err)
+            res.status(400).send({ errorMessage: 'Algo deu errado ao tentar excluir !'})
+        }
+    })
 }

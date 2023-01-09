@@ -8,6 +8,7 @@ type SideBarIconProps = {
     style?: string
     styleTooltip?: string
     deleteCookie?: boolean
+    isActive?: boolean
 }
 
 interface InputProps {
@@ -31,6 +32,7 @@ interface CountContextProps {
     countUser: number | null
     countCart: number | null
     productsCount: number | null
+    setProductsCount: (value: React.SetStateAction<number | null>) => void
     getUsersCount: () => Promise<void>
     getCartsCount: () => Promise<void>
     getProductsUserCount: () => Promise<void>
@@ -45,4 +47,11 @@ type SibeBarRefs = {
     setToggleStage?: (value: React.SetStateAction<string>) => void
 }
 
-export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps }
+type TablePaginationProps = {
+    totalProducts: number
+    productsPerPage: number
+    setCurrentPage: (value: React.SetStateAction<number>) => void
+    currentPage: number
+}
+
+export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps, TablePaginationProps }

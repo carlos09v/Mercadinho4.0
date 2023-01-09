@@ -2,13 +2,14 @@ import HeaderHome from "../../components/HeaderHome"
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from "react"
 import { motion } from 'framer-motion'
 
-import { toys2Img, foodImg, headphoneImg ,shampoosImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, patinsImg } from '../../assets/HomeGallery'
+import { toys2Img, foodImg, headphoneImg ,shampoosImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, patinsImg, snacksImg, drinksImg } from '../../assets/HomeGallery'
 import HomeSvg from '../../assets/sweet_home.svg'
 import { CountContext } from "../../contexts/CountContext"
 import './Home.css'
 
 const Home = () => {
-  const images = [toys2Img, foodImg, headphoneImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, shampoosImg, patinsImg]
+  // the first 4 images doesnt show up
+  const images = [toys2Img, toys2Img, toys2Img, toys2Img, toys2Img, foodImg, headphoneImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, shampoosImg, patinsImg, snacksImg, drinksImg]
   const carousel = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const { countCart, countUser, getCartsCount, getUsersCount } = useContext(CountContext)

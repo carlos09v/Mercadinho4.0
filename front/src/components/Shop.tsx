@@ -17,7 +17,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   const [cartDataRegister, setCartDataRegister] = useState({ productName: '', productPrice: '' })
   const { productsCount, getProductsUserCount } = useContext(CountContext)
   const { user, getUser, setCart } = useContext(AuthContext)
-  
+
 
   const carousel = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
@@ -25,15 +25,15 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   // https://www.youtube.com/watch?v=kCpca2z2cls&t=636s
   // const filteredData = filter.length > 0 ? data.filter(repo => data.name.includes(filter)) : []
 
-  
+
   useEffect(() => {
-    if(!user) {
+    if (!user) {
       getUser()
     }
-    if(!productsCount) {
+    if (!productsCount) {
       getProductsUserCount()
     }
-  },[])
+  }, [])
 
 
   // useLayoutEffect => You only want to use this hook when you need to do any DOM changes directly.
@@ -41,43 +41,43 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   useLayoutEffect(() => {
     // Largura Máxima do Drag no Carrossel
     // console.log(carrossel.current?.scrollWidth, carrossel.current?.offsetWidth)
-    if(carousel?.current) {
+    if (carousel?.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
     }
 
     // Colocar o sidebar type no localstorage caso ñ tenha
-    if(!localStorage.getItem('sidebar')){
+    if (!localStorage.getItem('sidebar')) {
       localStorage.setItem('sidebar', 'header')
-    }else if (localStorage.getItem('sidebar') === 'aside') {
+    } else if (localStorage.getItem('sidebar') === 'aside') {
       asideRef?.current?.classList.remove('hidden')
       headerRef?.current?.classList.add('hidden')
-    }else {
+    } else {
       asideRef?.current?.classList.add('hidden')
     }
 
     // Hide IconPrint from Sidebar
-    if(headerIconPrintRef?.current?.style.display === 'block' || asideIconPrintRef?.current?.style.display === 'block') {
-      if(headerIconPrintRef.current) headerIconPrintRef.current.style.display = 'none'
-      if(asideIconPrintRef.current) asideIconPrintRef.current.style.display = 'none'
-    } 
+    if (headerIconPrintRef?.current?.style.display === 'block' || asideIconPrintRef?.current?.style.display === 'block') {
+      if (headerIconPrintRef.current) headerIconPrintRef.current.style.display = 'none'
+      if (asideIconPrintRef.current) asideIconPrintRef.current.style.display = 'none'
+    }
   }, [])
 
-  const getDataAPI = async(e: FormEvent) => {
+  const getDataAPI = async (e: FormEvent) => {
     e.preventDefault()
 
     // Validações
-    if(search.length < 3) return toast.warn('Preencha o campo!')
-    
+    if (search.length < 3) return toast.warn('Preencha o campo!')
+
   }
 
   // Register Product
-  const handleCartRegister = async(e: FormEvent) => {
+  const handleCartRegister = async (e: FormEvent) => {
     e.preventDefault()
 
     // Validações
-    if(cartDataRegister.productName === '' || cartDataRegister.productPrice === '') return toast.warn('Preencha os dados do PRODUTO!')
-    if(cartDataRegister.productName.length <= 2|| cartDataRegister.productName.length > 16) return toast.warn('O NOME precisa ter entre 2 e 16 dígitos !')
-    
+    if (cartDataRegister.productName === '' || cartDataRegister.productPrice === '') return toast.warn('Preencha os dados do PRODUTO!')
+    if (cartDataRegister.productName.length <= 2 || cartDataRegister.productName.length > 16) return toast.warn('O NOME precisa ter entre 2 e 16 dígitos !')
+
     try {
       const { data } = await api.post('/create-product', {
         productName: cartDataRegister.productName,
@@ -88,7 +88,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
       getProductsUserCount()
       setCart(null) // Resetar o setCart pra ele fazer outra request qndo entrar no cart
       setCartDataRegister({ productPrice: '', productName: '' })
-    }catch (err) {
+    } catch (err) {
       console.log(err)
     }
   }
@@ -163,54 +163,59 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
 
       <div className="register-container !min-h-0 mt-3">
         <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400">Adicionar produto</h1>
-        <form onSubmit={handleCartRegister} className="mx-auto">
-          <p className="mt-3"></p>
-          <div className="flex gap-10 justify-center">
-
-            <div className="flex gap-5 items-center font-bold">
-              <label htmlFor="productName" className="mb-4 dark:text-[#ededed]">Nome:</label>
-              <Input
-                id="productName"
-                placeholder="Ex: Amendoim"
-                type="text"
-                maxLength={16}
-                onChange={(e: FormEvent) => setCartDataRegister({ ...cartDataRegister, productName: (e.target as HTMLTextAreaElement).value })}
-                value={cartDataRegister.productName}
-                // productNameIcon={<MdShoppingCart className="absolute text-xl left-7 fill-white" />}
-              />
-            </div>
-        
-            <div className=" flex gap-5 items-center font-bold">
-              <label htmlFor="productPrice" className="mb-4 dark:text-[#ededed]">Preço:</label>
-              <Input
-                id="productPrice"
-                placeholder="Ex: 3.78"
-                type="number"
-                step="0.01"
-                maxLength={4}
-                max={1000000}
-                min={0}
-                onChange={(e: FormEvent) => setCartDataRegister({ ...cartDataRegister, productPrice: (e.target as HTMLInputElement).value })}
-                value={cartDataRegister.productPrice}
-                // productPriceIcon={<MdAttachMoney className="absolute text-xl left-7 fill-white" />}
-              />
-            </div>
+        {productsCount && productsCount >= 24 ? (
+          <div className="text-lg font-semibold text-center">
+            <p className="text-purple-500 dark:text-purple-400 mt-2">- Você atingiu o limite máximo de produtos no carrinho :( </p>
+            <p className="text-green-600 dark:text-green-400 mt-2">Conclua a sua compra !</p>
           </div>
-          
+        ) : (
+          <form onSubmit={handleCartRegister} className="mx-auto">
+            <p className="mt-3"></p>
+            <div className="flex gap-10 justify-center">
 
-          <button type="submit" className="bg-purple-600 mx-auto block max-w-[25%]">Cadastrar</button>
-        </form>
+              <div className="flex gap-5 items-center font-bold">
+                <label htmlFor="productName" className="mb-4 dark:text-[#ededed]">Nome:</label>
+                <Input
+                  id="productName"
+                  placeholder="Ex: Amendoim"
+                  type="text"
+                  maxLength={16}
+                  onChange={(e: FormEvent) => setCartDataRegister({ ...cartDataRegister, productName: (e.target as HTMLTextAreaElement).value })}
+                  value={cartDataRegister.productName}
+                // productNameIcon={<MdShoppingCart className="absolute text-xl left-7 fill-white" />}
+                />
+              </div>
+
+              <div className=" flex gap-5 items-center font-bold">
+                <label htmlFor="productPrice" className="mb-4 dark:text-[#ededed]">Preço:</label>
+                <Input
+                  id="productPrice"
+                  placeholder="Ex: 3.78"
+                  type="number"
+                  step="0.01"
+                  maxLength={4}
+                  max={1000000}
+                  min={0.01}
+                  onChange={(e: FormEvent) => setCartDataRegister({ ...cartDataRegister, productPrice: (e.target as HTMLInputElement).value })}
+                  value={cartDataRegister.productPrice}
+                // productPriceIcon={<MdAttachMoney className="absolute text-xl left-7 fill-white" />}
+                />
+              </div>
+            </div>
+            <button type="submit" className="bg-purple-600 mx-auto block max-w-[35%] text-base">Adicionar ao carrinho</button>
+          </form>
+        )}
       </div>
 
       {productsCount && (
         <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1" onClick={() => setToggleStage !== undefined ? setToggleStage('Cart') : null}>
-          <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span> 
+          <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span>
           <div className="flex gap-2 items-center">
             Ver carrinho <MdShoppingCart />
           </div>
         </button>
       )}
-     
+
     </div>
   )
 }

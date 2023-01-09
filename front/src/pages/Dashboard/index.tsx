@@ -8,7 +8,7 @@ import { BiLogOut } from 'react-icons/bi'
 import { MdOutlineShoppingCart, MdOutlineLocalPrintshop } from 'react-icons/md'
 import { BsCartCheck } from 'react-icons/bs'
 import Shop from "../../components/Shop"
-import Cart from "../../components/Cart"
+import Cart from "../../components/Cart/Cart"
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -29,16 +29,17 @@ const Dashboard = () => {
         <SideBarIcon deleteCookie={true} style="sidebar-logout" styleTooltip="sidebar-logout-tooltip" icon={<BiLogOut />} text='SAIR' to="/" />
         <SideBarIcon icon={<FiHome />} text='Home' to="/" />
         <button onClick={() => setToggleStage(STAGES[1])}>
-          <SideBarIcon icon={<MdOutlineShoppingCart />} text='Shop' />
+          <SideBarIcon isActive={toggleStage === 'Shop' ? true : false} icon={<MdOutlineShoppingCart />} text='Shop' />
         </button>
         <button ref={asideIconPrintRef} style={{ display: 'none' }} onClick={window.print}>
           <SideBarIcon icon={<MdOutlineLocalPrintshop />} text='Imprimir/Print' style="sidebar-print" styleTooltip="sidebar-print-tooltip" />
         </button>
         <button onClick={() => setToggleStage(STAGES[2])}>
-          <SideBarIcon style="sidebar-cart" styleTooltip="sidebar-cart-tooltip" icon={<BsCartCheck />} text='Carrinho/Cart' />
+          <SideBarIcon style="sidebar-cart"
+         styleTooltip="sidebar-cart-tooltip" isActive={toggleStage === 'Cart' ? true : false} icon={<BsCartCheck />} text='Carrinho/Cart' />
         </button>
         <button onClick={() => setToggleStage(STAGES[0])}>
-          <SideBarIcon style='sidebar-setting' icon={<FiSettings />} text='Configurações' />
+          <SideBarIcon style='sidebar-setting' isActive={toggleStage === 'Settings' ? true : false} icon={<FiSettings />} text='Configurações' />
         </button>
       </aside>
 
@@ -46,16 +47,16 @@ const Dashboard = () => {
         <HeaderBarIcon deleteCookie={true} style="headbar-logout" styleTooltip="sidebar-logout-tooltip" icon={<BiLogOut />} text='SAIR' to="/" />
         <HeaderBarIcon icon={<FiHome />} text='Home' to="/" />
         <button onClick={() => setToggleStage(STAGES[1])}>
-          <HeaderBarIcon icon={<MdOutlineShoppingCart />} text='Shop' />
+          <HeaderBarIcon isActive={toggleStage === 'Shop' ? true : false} icon={<MdOutlineShoppingCart />} text='Shop' />
         </button>
         <button ref={headerIconPrintRef} style={{ display: 'none' }} onClick={window.print}>
           <HeaderBarIcon icon={<MdOutlineLocalPrintshop />} text='Imprimir/Print' style="sidebar-print" styleTooltip="sidebar-print-tooltip" />
         </button>
         <button onClick={() => setToggleStage(STAGES[2])}>
-          <HeaderBarIcon style="sidebar-cart" styleTooltip="sidebar-cart-tooltip" icon={<BsCartCheck />} text='Carrinho/Cart' />
+          <HeaderBarIcon isActive={toggleStage === 'Cart' ? true : false} style="sidebar-cart" styleTooltip="sidebar-cart-tooltip" icon={<BsCartCheck />} text='Carrinho/Cart' />
         </button>
         <button onClick={() => setToggleStage(STAGES[0])}>
-          <HeaderBarIcon style='sidebar-setting' icon={<FiSettings />} text='Configurações' />
+          <HeaderBarIcon isActive={toggleStage === 'Settings' ? true : false} style='sidebar-setting' icon={<FiSettings />} text='Configurações' />
         </button>
       </header>
 

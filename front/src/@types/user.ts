@@ -16,7 +16,7 @@ type CartProps = {
     id: string
     userId: string
     productName: string
-    productPrice: string
+    productPrice: number
     addedAt: string
 }
 
