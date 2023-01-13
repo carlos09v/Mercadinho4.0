@@ -2,6 +2,7 @@
 
 /* IntelliSense for TypeScript */
 interface ImportMetaEnv {
+    readonly VITE_API_BASEURL: string
     readonly VITE_XRAPID_API_KEY: string
     readonly VITE_XRAPID_API_HOST_SENDGRID: string
     readonly VITE_XRAPID_API_HOST_BARCODELOOKUP: string

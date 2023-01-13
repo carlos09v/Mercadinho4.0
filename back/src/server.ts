@@ -13,7 +13,9 @@ async function bootstrap() {
     })
 
     await fastify.register(cors, {
-        origin: true // Qlquer aplicação pode acessar o back-end
+        origin: 'https://mercadinho4-0.vercel.app/',
+        credentials: true,
+        methods: ['POST', 'PUT', 'GET', 'DELETE'] // Qlquer aplicação pode acessar o back-end
         // em ambiente dev = true. Em prod é so adicionar os domínios Ex: google.com
     })
 
@@ -30,8 +32,9 @@ async function bootstrap() {
     await fastify.register(userRoutes)
     await fastify.register(cartRoutes)
     
+    const PORT = process.env.PORT || 3333
 
-    await fastify.listen({ port: 3333 })
+    await fastify.listen({ PORT })
 }
 
 bootstrap()
