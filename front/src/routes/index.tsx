@@ -46,8 +46,8 @@ const AppRouter = () => {
         <Route path='/dashboard' element={<PrivateRoutes />}>
           <Route path='/dashboard' element={<Dashboard />}></Route>
         </Route>
-        <Route path='/payout' element={<PrivateRoutes />}>
-          <Route path='/payout' element={<Payout />}></Route>
+        <Route path='/payout/:userId' element={<PrivateRoutes />}>
+          <Route path='/payout/:userId' element={<Payout />}></Route>
         </Route>
 
         <Route path='*' element={<Error />} />

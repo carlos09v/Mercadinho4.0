@@ -39,7 +39,10 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
     e.preventDefault()
 
     // Validar
-    if (userDataRegister.name === '' && userDataRegister.avatarUrl === '') return toast.warn('Preencha um dos campos!')
+    if (userDataRegister.name === '' && userDataRegister.avatarUrl === '') return toast.warn('Preencha os dos campos!')
+    if(userDataRegister.avatarUrl === '') return toast.warn('Não é possivel remover sua foto ! (Coloque outra no lugar :)')
+    // Evitar dar outro post se os dados do user forem os mesmos !
+    if(user?.avatarUrl === userDataRegister.avatarUrl && user?.name === userDataRegister.name) return toast.warn('Nenhuma alteração feita!')
 
     // Update
     api.put('/update-user', {
@@ -114,10 +117,10 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
 
       <hr className="my-6 bg-purple-500" />
 
-      <div className="flex justify-around text-[#111218] dark:text-[#ededed] p-2">
+      <div className="flex justify-around  dark:text-[#ededed] p-2">
         <div className="border-r-2 border-[#111218] dark:border-[#ededed] w-[50%]">
           <h2 className="text-center mb-4 max-w-[200px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl">Interface:</h2>
-          <div className="flex gap-8 border border-black dark:border-blue-400 bg-purple-400 dark:bg-blue-600/70 p-3 rounded font-bold items-center justify-center max-w-sm mx-auto">
+          <div className="flex gap-8 border border-black dark:border-blue-400 bg-purple-500 dark:bg-blue-600/70 p-3 rounded font-bold items-center justify-center max-w-sm mx-auto text-white">
             <div className="flex flex-col items-center gap-3">
               <label htmlFor="setHeaderBar">Barra Superior</label>
               <input type="radio" name="radioSettings" id="setHeaderBar" defaultChecked={localStorage.getItem('sidebar') === 'header' ? true : false} onChange={() => {
@@ -136,7 +139,6 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
               }} />
             </div>
           </div>
-
         </div>
 
         <div className="w-[50%] ml-4">
@@ -152,7 +154,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
           <p className="dark:text-blue-500 text-purple-500 font-semibold mb-4 text-lg">Tem certeza que deseja excluir sua conta ?</p>
           <div className="flex gap-3 items-center">
             <label htmlFor="emailDeleteAccount" className="dark:text-white">Email:</label>
-            <input type="email" id="emailDeleteAccount" placeholder="Insira o seu email para confirmar..." className="p-3 rounded-2xl w-full bg-gray-200 dark:bg-white" onChange={(e: FormEvent) => setConfirmEmail((e.target as HTMLTextAreaElement).value) } />
+            <input type="email" id="emailDeleteAccount" placeholder="Insira o seu email para confirmar..." className="p-3 rounded-2xl w-full" onChange={(e: FormEvent) => setConfirmEmail((e.target as HTMLTextAreaElement).value) } />
           </div>
           <button className="btn bg-red-500 mx-auto block mt-4" type="submit">Excluir</button>
         </form>

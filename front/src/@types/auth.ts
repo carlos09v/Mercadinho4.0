@@ -12,6 +12,7 @@ interface AuthContextDataProps {
     cart: CartProps[] | null
     setUser: (value: React.SetStateAction<UserProps | null>) => void
     setCart: (value: React.SetStateAction<CartProps[] | null>) => void
+    totProd: number
 }
 
 type UserTokenProps = {

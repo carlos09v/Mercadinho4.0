@@ -18,16 +18,25 @@
 		2.7 - nookies
 		2.8 - framer-motion
 		2.9 - react-modal
-		3. -> APIS - SendGrid(send emails)
+		2.10 - APIS =>
+			2.10.1 - SendGrid(send emails)
 
 	-- Back-end
-		2.8 - fastify
-		2.9 - @fastify/cors
-		2.10 - @fastify/jwt
-
+		3.1 - typescript
+			3.1.1 - tsx
+			3.1.2 - @types/node
+		3.2 - prisma
+			3.2.1 - @prisma/client
+			3.2.2 - prisma-erd-generator
+			3.2.3 - @mermaid-js/mermaid-cli
+		3.3 - fastify
+			3.3.1 - @fastify/cors
+			3.3.2 - @fastify/jwt
+		3.4 - zod
+ 
 3. DB -> Prisma
-	3.1 - Sqlite
-	3.2 - User and Cart models/tables
+	4.1 - Sqlite
+	4.2 - User and Cart models/tables
 
 
 !! Autenticação do lado server (jwt token) e web (cookie) pra ter permissão de fazer requests e acessar páginas
