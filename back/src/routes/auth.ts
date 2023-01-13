@@ -90,4 +90,21 @@ export const authRoutes = async(fastify: FastifyInstance) => {
 
         return { token }
     })
+
+    // Confirm Payout
+    fastify.delete('/confirm-payout', {
+        onRequest:[authenticate]
+    }, async(req, res) => {
+        try {
+            await prisma.cart.deleteMany({
+                where: {
+                    userId: req.user.sub
+                }
+            })
+
+            res.status(200).send({ message: 'Pagamento efetuado com sucesso !'})
+        }catch (err) {
+            console.log(err)
+        }
+    })
 }

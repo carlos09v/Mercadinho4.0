@@ -107,7 +107,7 @@ const Login = () => {
         <form onSubmit={e => sendEmail(e, userDataRegister.email)} className="flex flex-col gap-4 w-[500px]">
           <div className="flex gap-3 items-center">
             <label htmlFor="sendEmailInput" className="font-semibold dark:text-white">Email:</label>
-            <input type="email" id="sendEmailInput" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full bg-gray-200 dark:bg-white dark:placeholder:text-blue-400" onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })} />
+            <input type="email" id="sendEmailInput" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full dark:placeholder:text-blue-400" onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })} />
           </div>
           <button className="bg-[#F50057] hover:bg-[#f50056d7] duration-200" type="submit">Enviar</button>
         </form>

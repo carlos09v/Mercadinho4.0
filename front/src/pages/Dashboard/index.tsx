@@ -8,7 +8,7 @@ import { BiLogOut } from 'react-icons/bi'
 import { MdOutlineShoppingCart, MdOutlineLocalPrintshop } from 'react-icons/md'
 import { BsCartCheck } from 'react-icons/bs'
 import Shop from "../../components/Shop"
-import Cart from "../../components/Cart/Cart"
+import Cart from "../../components/Cart"
 import './Dashboard.css'
 
 const Dashboard = () => {

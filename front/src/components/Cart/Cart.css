@@ -5,7 +5,6 @@
 @tailwind components;
 
 @layer components {
-
     /* Table Cart */
     th,
     td {
@@ -21,15 +20,12 @@
     }
 
     tr:last-of-type {
-        @apply border-b-2 border-purple-400 dark:border-blue-700
+        @apply border-b-2 border-purple-500 dark:border-blue-700
     }
 
+    .payoutButton-tooltip,
     .deleteProduct-tooltip {
-        @apply absolute w-auto p-2 min-w-max left-12 top-0 rounded-md shadow-md text-white bg-black/[.9] text-xs font-bold transition-all duration-100 origin-left scale-0
-    }
-
-    .payoutButton-tooltip {
-        @apply absolute w-auto p-2 min-w-max right-0 top-0 rounded-md shadow-md text-white bg-black/[.9] text-xs font-bold transition-all duration-100 origin-left scale-0
+        @apply absolute w-auto p-2 min-w-max left-[20rem] top-1 rounded-md shadow-md text-white bg-black/[.9] text-xs font-bold transition-all duration-100 origin-left scale-0
     }
 
     /*  Table Pagination */
@@ -116,7 +112,7 @@
     perspective: 1000px;
 }
 
-.cashModal>span {
+.cashModal>a {
     font-size: 19px;
     letter-spacing: 1px;
     transform-style: preserve-3d;
@@ -125,8 +121,8 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.cashModal>span::before,
-.cashModal>span::after {
+.cashModal>a::before,
+.cashModal>a::after {
     position: absolute;
     height: 55px;
     width: 200px;
@@ -138,32 +134,31 @@
     border-radius: 5px;
 }
 
-.cashModal>span::before {
+.cashModal>a::before {
     content: "Ir pro CAIXA";
     color: #fff;
     background: #000;
     transform: rotateY(0deg) translateZ(25px);
 }
 
-html.dark .cashModal>span::before {
+html.dark .cashModal>a::before {
     background-color: #eee;
     color: #000;
 }
 
-html.dark .cashModal>span::after {
+html.dark .cashModal>a::after {
     background-color: #eee;
 }
 
-.cashModal>span::after {
+.cashModal>a::after {
     content: "CASH REGISTER";
     color: #000;
     transform: rotateX(90deg) translateZ(25px);
 }
 
-.cashModal>span:hover {
+.cashModal>a:hover {
     transform: translateZ(-25px) rotateX(-90deg);
 }
-
 
 /* Go to Payout */
 .cashPayoutButton {

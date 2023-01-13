@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { FormEvent, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { FormEvent, useContext, useLayoutEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import { CartProps } from "../@types/user"
 import { api } from "../lib/axios"
@@ -18,23 +18,18 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   const { productsCount, getProductsUserCount } = useContext(CountContext)
   const { user, getUser, setCart } = useContext(AuthContext)
 
-
   const carousel = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   // DERIVED STATES
   // https://www.youtube.com/watch?v=kCpca2z2cls&t=636s
   // const filteredData = filter.length > 0 ? data.filter(repo => data.name.includes(filter)) : []
 
-
-  useEffect(() => {
-    if (!user) {
-      getUser()
-    }
-    if (!productsCount) {
-      getProductsUserCount()
-    }
-  }, [])
-
+  // Get User and ProductsCount
+  if (!user) {
+    getUser()
+    getProductsUserCount()
+  }
+  
 
   // useLayoutEffect => You only want to use this hook when you need to do any DOM changes directly.
   // This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
@@ -95,11 +90,20 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
 
   return (
     <div className="divMain flex flex-col items-center max-w-4xl">
+      {productsCount && (
+        <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1" onClick={() => setToggleStage !== undefined ? setToggleStage('Cart') : null}>
+          <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span>
+          <div className="flex gap-2 items-center">
+            Ver carrinho <MdShoppingCart />
+          </div>
+        </button>
+      )}
+      
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
-      <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">Bem-vindo(a) 😁 !</h1>
+      <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">- Bem-vindo(a) 😁 !</h1>
 
       {/* SEARCH QUERY */}
-      <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
+      {/* <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
         <Input
           id="search"
           placeholder="Procurar produto..."
@@ -109,7 +113,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         />
 
         <button type="submit" className="bg-green-600 !w-[100px] mb-4">Enviar</button>
-      </form>
+      </form> */}
 
       {/* FILTER */}
       {search.length > 0 && (
@@ -159,7 +163,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         </motion.div>
       </motion.div> */}
 
-      <span className="font-semibold text-lg underline text-black dark:text-gray-200">OU</span>
+      <span className="font-semibold text-lg underline text-black dark:text-gray-200">Coming soon...</span>
 
       <div className="register-container !min-h-0 mt-3">
         <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400">Adicionar produto</h1>
@@ -206,15 +210,6 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
           </form>
         )}
       </div>
-
-      {productsCount && (
-        <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1" onClick={() => setToggleStage !== undefined ? setToggleStage('Cart') : null}>
-          <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span>
-          <div className="flex gap-2 items-center">
-            Ver carrinho <MdShoppingCart />
-          </div>
-        </button>
-      )}
 
     </div>
   )

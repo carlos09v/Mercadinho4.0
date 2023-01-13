@@ -14,9 +14,9 @@ export const api = axios.create({
 if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 
-api.interceptors.request.use(config => {
-    return config
-})
+// api.interceptors.request.use(config => {
+//     return config
+// })
 
 // to send the password user by the email
 // using SendGridAPI (50 emails/day) (Basic Plan)

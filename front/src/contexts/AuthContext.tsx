@@ -13,30 +13,36 @@ export const AuthContext = createContext({} as AuthContextDataProps)
 
 //Componente Provider para passar os valores para os Childrens
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const { resetCounts } = useContext(CountContext)
+    const { resetCounts, getProductsUserCount } = useContext(CountContext)
     const [cart, setCart] = useState<CartProps[] | null>(null)
     const [user, setUser] = useState<UserProps | null>(null)
-    
-    
-    const getUser = async() => {
+    // TotProductsPrice
+    let totProd = 0
+    if (cart) {
+        cart.forEach(prod => {
+            totProd += prod.productPrice
+        })
+    }
+
+    const getUser = async () => {
         const { 'auth.token': token } = parseCookies()
-        if(token) {
+        if (token) {
             try {
                 const { data } = await api.get('/me')
                 setUser(data.userDB)
             } catch (err) {
                 console.log(err)
             }
-        }else {
+        } else {
             console.log('Não existe token :(')
         }
     }
 
-    const getCart = async() => {
+    const getCart = async () => {
         const { data } = await api.get('/cartUser')
         setCart(data.cart)
     }
-    
+
 
     const signIn = async ({ email, password }: SignInData) => {
         // Validar o Email e Senha e Receber o Token JWT e o Cart[] do Back-end
@@ -55,11 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 maxAge: 60 * 60 * 24 // 24 Hours
             })
 
-            getUser() // Receber o UserData
+            await getUser() // Receber o UserData
+            getProductsUserCount() // Get ProductsCount
         } catch (err: any) {
-            if(err.response) return toast.error(err.response.data.message)
+            if (err.response) return toast.error(err.response.data.message)
         }
-        
+
     }
 
     const signOut = () => {
@@ -71,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ getCart, cart, user, signIn, signOut, getUser, setUser, setCart }}>
+        <AuthContext.Provider value={{ getCart, cart, user, signIn, signOut, getUser, setUser, setCart, totProd }}>
             {children}
         </AuthContext.Provider>
     )

@@ -47,6 +47,7 @@ type SibeBarRefs = {
     setToggleStage?: (value: React.SetStateAction<string>) => void
 }
 
+/* Cart */
 type TablePaginationProps = {
     totalProducts: number
     productsPerPage: number
@@ -54,4 +55,12 @@ type TablePaginationProps = {
     currentPage: number
 }
 
-export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps, TablePaginationProps }
+/* Payout */
+type PayoutProps = {
+    setCurrentStep: (value: React.SetStateAction<string>) => void
+    setInputPayout?:  (value: React.SetStateAction<string>) => void
+    inputPayout: string
+    buttonBackRef?: React.RefObject<HTMLButtonElement>
+}
+
+export type { SideBarIconProps, SibeBarRefs, InputProps, CountContextProps, TablePaginationProps, PayoutProps }
