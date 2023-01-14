@@ -144,6 +144,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
         <div className="w-[50%] ml-4">
           <h2 className="mb-4 max-w-[220px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl text-center">Privacidade:</h2>
           <button className="btn bg-red-500 !w-[40%] !text-base mx-auto block" onClick={() => setShowModal(true)}>Excluir conta</button>
+          <p className="absolute right-0 bottom-0 text-sm">Made by <a href="https://github.com/carlos09v" target="_blank">@carlos09v</a> ✌️</p>
         </div>
       </div>
 

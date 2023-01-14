@@ -21,7 +21,7 @@ async function bootstrap() {
 
     // Em produção isso precisa ser uma variável ambiente
     await fastify.register(jwt, {
-        secret: process.env.JWT_SECRET_KEY
+        secret: process.env.JWT_SECRET_KEY! // actually, exclamation (!) says, hey typescript, don't worry, don't check this.
     })
 
     // http://localhost:3333
@@ -33,8 +33,7 @@ async function bootstrap() {
     await fastify.register(cartRoutes)
     
     const PORT = process.env.PORT || 3333
-
-    await fastify.listen({ PORT })
+    await fastify.listen({ port: PORT })
 }
 
 bootstrap()
