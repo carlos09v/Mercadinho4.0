@@ -33,6 +33,7 @@
 			3.3.1 - @fastify/cors
 			3.3.2 - @fastify/jwt
 		3.4 - zod
+		3.5 - PlanetScale => (DB MySQL na Nuvem)
  
 3. DB -> Prisma
 	4.1 - Sqlite

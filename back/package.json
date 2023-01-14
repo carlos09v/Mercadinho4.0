@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc --build",
-    "start": "node dist/src/server.js"
+    "build": "tsc && node dist/src/server.js",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -37,7 +37,15 @@
     "6": "npm i prisma-erd-generator @mermaid-js/mermaid-cli -D",
     "7": "npx prisma generate",
     "8": "npx prisma db seed",
-    "9": "npm i zod @fastify/jwt"
+    "9": "npm i zod @fastify/jwt",
+    "10": "scoop bucket add pscale https://github.com/planetscale/scoop-bucket.git",
+    "11": "scoop install pscale mysql",
+    "12": "pscale auth login",
+    "13": "pscale db create mercadinho4_0-DB",
+    "14": "pscale branch promote mercadinho4_0-db main",
+    "15": "pscale branch create mercadinho4_0-db initial-setup",
+    "16": "pscale connect mercadinho4_0-db initial-setup --port 3309",
+    "17": "npx prisma db push"
   },
   "_comments": {
     "3": "tsx compila o codigo e executa automaticamente",
@@ -45,6 +53,11 @@
     "5": "Vizualizar o DB no browser",
     "7": "Vai gerar o diagrama em svg",
     "8": "Rodar (criar) o seed",
-    "9": "Libs de Schema Validation e Token Generate"
+    "9": "Libs de Schema Validation e Token Generate",
+    "10, 11, 12, 13": "Usando PlanetScale => instalei o scoop - loguei no pscale - criei um DB e subi",
+    "14": "Dizer q a branch principal (main) é a prod",
+    "15": "Criar uma branch de desenvolvimento",
+    "16": "Deixar o DB no ar",
+    "17": "Subir o Schema pro DB pscale => pra fzer isso tive q mudar o DB de sqlite pra mysql"
   }
 }
