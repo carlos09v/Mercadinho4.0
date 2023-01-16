@@ -1,5 +1,6 @@
 type UserProps = {
     id: string
+    cash: number
     email: string
     name?: string
     avatarUrl?: string
@@ -14,10 +15,22 @@ type UserDataDB = {
 
 type CartProps = {
     id: string
+    category: CategoriesCart
     userId: string
     productName: string
     productPrice: number
     addedAt: string
+}
+
+enum CategoriesCart {
+    Food,
+    Fruits,
+    Eletronics,
+    Video_Games,
+    Clothes,
+    Sports,
+    House,
+    Others
 }
 
 type SignInData = {

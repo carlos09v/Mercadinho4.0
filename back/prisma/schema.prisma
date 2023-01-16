@@ -12,6 +12,7 @@ generator client {
 // }
 
 datasource db {
+  // provider     = "sqlite"
   provider     = "mysql"
   url          = env("DATABASE_URL")
   // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
@@ -21,12 +22,13 @@ datasource db {
 // Criar Tabelas/Models
 // Usuário
 model User {
-  id String @id @default(cuid()) // // Dizer q é Primary Key - Obs: O Auto Increment ñ é mt seguro
+  id String @id @default(cuid()) // Dizer q é Primary Key - Obs: O Auto Increment ñ é mt seguro
 
   name      String? // Nullable
   avatarUrl String?
   email     String   @unique
   password  String
+  cash      Float    @default(15)
   createdAt DateTime @default(now())
 
   cart Cart[] // Relacionameto Inverso
@@ -39,10 +41,22 @@ model Cart {
 
   productName  String
   productPrice Float
-  addedAt      DateTime @default(now())
+  category     Categories
+  addedAt      DateTime   @default(now())
 
   // Relacionamentos
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId]) // In MySQL
+}
+
+enum Categories {
+  Food
+  Fruits
+  Eletronics
+  Video_Games
+  Clothes
+  Sports
+  House
+  Others
 }

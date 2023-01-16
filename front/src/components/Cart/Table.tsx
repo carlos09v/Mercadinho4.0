@@ -42,6 +42,7 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
                             <tr className="text-xl bg-purple-500 dark:bg-blue-700 text-slate-100">
                                 <th className="text-lg">No.</th>
                                 <th></th>
+                                <th></th>
                                 <th>Nome do Prod.</th>
                                 <th>Preço</th>
                             </tr>
@@ -50,6 +51,7 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
                             {currentProducts?.map((prod, i) => (
                                 <tr key={i} className='font-semibold'>
                                     <td>{i + 1}</td>
+                                    <td>{prod.category}</td>
                                     <td>{new Date(prod.addedAt).toLocaleDateString()}</td>
                                     <td>{prod.productName}</td>
                                     <td className="dark:text-green-400 text-blue-700">R$ {prod.productPrice}</td>

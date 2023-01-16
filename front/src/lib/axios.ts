@@ -7,13 +7,7 @@ import { SignInData } from "../@types/user";
 const { 'auth.token': token } = parseCookies()
 
 export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASEURL,
-    // headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Methods': 'DELETE, POST, GET, PUT',
-    //     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-    //     'Content-type': 'application/json;charset=utf-8'
-    // }
+    baseURL: import.meta.env.VITE_API_BASEURL
 })
 
 // Inserir o Token no Header das requisições

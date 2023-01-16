@@ -14,7 +14,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
-  const [cartDataRegister, setCartDataRegister] = useState({ productName: '', productPrice: '' })
+  const [cartDataRegister, setCartDataRegister] = useState({ productName: '', productPrice: '', inputCategory: '' })
   const { productsCount, getProductsUserCount } = useContext(CountContext)
   const { user, getUser, setCart } = useContext(AuthContext)
 
@@ -29,7 +29,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
     getUser()
     getProductsUserCount()
   }
-  
+
 
   // useLayoutEffect => You only want to use this hook when you need to do any DOM changes directly.
   // This hook is optimized, to allow the engineer to make changes to a DOM node directly before the browser has a chance to paint.
@@ -70,19 +70,20 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
     e.preventDefault()
 
     // Validações
-    if (cartDataRegister.productName === '' || cartDataRegister.productPrice === '') return toast.warn('Preencha os dados do PRODUTO!')
+    if (cartDataRegister.productName === '' || cartDataRegister.productPrice === '' || cartDataRegister.inputCategory === '') return toast.warn('Preencha os dados do PRODUTO!')
     if (cartDataRegister.productName.length <= 2 || cartDataRegister.productName.length > 16) return toast.warn('O NOME precisa ter entre 2 e 16 dígitos !')
 
     try {
       const { data } = await api.post('/create-product', {
         productName: cartDataRegister.productName,
-        productPrice: parseFloat(cartDataRegister.productPrice)
+        productPrice: parseFloat(cartDataRegister.productPrice),
+        category: cartDataRegister.inputCategory
       })
 
       toast.success(data.message)
       getProductsUserCount()
       setCart(null) // Resetar o setCart pra ele fazer outra request qndo entrar no cart
-      setCartDataRegister({ productPrice: '', productName: '' })
+      setCartDataRegister({ productPrice: '', productName: '', inputCategory: '' })
     } catch (err) {
       console.log(err)
     }
@@ -98,12 +99,12 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
           </div>
         </button>
       )}
-      
+
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
       <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">- Bem-vindo(a) 😁 !</h1>
 
       {/* SEARCH QUERY */}
-      {/* <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
+      <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
         <Input
           id="search"
           placeholder="Procurar produto..."
@@ -113,7 +114,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         />
 
         <button type="submit" className="bg-green-600 !w-[100px] mb-4">Enviar</button>
-      </form> */}
+      </form>
 
       {/* FILTER */}
       {search.length > 0 && (
@@ -163,7 +164,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         </motion.div>
       </motion.div> */}
 
-      <span className="font-semibold text-lg underline text-black dark:text-gray-200">Coming soon...</span>
+      <span className="font-semibold text-lg underline text-black dark:text-gray-200">OU</span>
 
       <div className="register-container !min-h-0 mt-3">
         <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400">Adicionar produto</h1>
@@ -176,7 +177,6 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
           <form onSubmit={handleCartRegister} className="mx-auto">
             <p className="mt-3"></p>
             <div className="flex gap-10 justify-center">
-
               <div className="flex gap-5 items-center font-bold">
                 <label htmlFor="productName" className="mb-4 dark:text-[#ededed]">Nome:</label>
                 <Input
@@ -189,8 +189,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
                 // productNameIcon={<MdShoppingCart className="absolute text-xl left-7 fill-white" />}
                 />
               </div>
-
-              <div className=" flex gap-5 items-center font-bold">
+              <div className="flex gap-5 items-center font-bold">
                 <label htmlFor="productPrice" className="mb-4 dark:text-[#ededed]">Preço:</label>
                 <Input
                   id="productPrice"
@@ -206,7 +205,25 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
                 />
               </div>
             </div>
-            <button type="submit" className="bg-purple-600 mx-auto block max-w-[35%] text-base">Adicionar ao carrinho</button>
+
+            <div className="mx-auto max-w-[30%] flex flex-col">
+              <label className="mt-1 text-center font-bold" htmlFor="categoryOptions">Escolha uma Categoria:</label>
+              <select className="mt-2 dark:text-black rounded" defaultValue={cartDataRegister.inputCategory} name="categoryOptions" id="categoryOptions" onChange={e => setCartDataRegister({ ...cartDataRegister, inputCategory: (e.target as HTMLSelectElement).value })}>
+                <option className='text-center' value="" >--- ⬇️ ⬇️ ---</option>
+                <option value="Food">Comida</option>
+                <option value="Eletronics">Eletrônicos</option>
+                <option value="Fruits">Frutas</option>
+                <option value="Video_Games">Video Games</option>
+                <option value="Clothes">Roupas</option>
+                <option value="Sports">Esportes</option>
+                <option value="House">Casa</option>
+                <option value="Others">Outros</option>
+              </select>
+            </div>
+
+
+
+            <button type="submit" className="bg-purple-600 mx-auto block max-w-[35%] text-base mt-6">Adicionar ao carrinho</button>
           </form>
         )}
       </div>

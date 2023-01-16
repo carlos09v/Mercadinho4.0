@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { prisma } from '../lib/prisma'
 import { z } from 'zod'
 import { authenticate } from '../plugins/authenticate'
+import { Categories } from '@prisma/client'
 
 export const cartRoutes = async(fastify: FastifyInstance) => {
     // Contagem de Produtos criados
@@ -45,12 +46,15 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
     fastify.post('/create-product', {
         onRequest: [authenticate]
     }, async(req, res) => {
+        const { Clothes, Eletronics, Food, Fruits, House, Video_Games, Others, Sports } = Categories
+        
         // Validar os dados pra ser tratado antes de enviar pro DB (utilizando o zod)
         const createCartBody = z.object({
             productName: z.string().min(2).max(16).trim(),
-            productPrice: z.number().positive()
+            productPrice: z.number().positive(),
+            category: z.enum([Clothes, Eletronics, Food, Fruits, House, Video_Games, Others, Sports])
         })
-        const { productName, productPrice } = createCartBody.parse(req.body)
+        const { productName, productPrice, category } = createCartBody.parse(req.body)
         
         // Register
         try {
@@ -58,6 +62,7 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
                 data: {
                     productName,
                     productPrice,
+                    category,
                     userId: req.user.sub
                 }
             })
@@ -67,6 +72,9 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
             })
         } catch (err) {
             console.log(err)
+            res.status(400).send({ 
+                message: 'Erro ao cadastrar produto no carrinho !'
+            })
         }
 
     })
