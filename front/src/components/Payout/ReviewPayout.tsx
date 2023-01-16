@@ -61,7 +61,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
       jurosLabel = '(20% de Juros)'
       break
     default:
-      displayPayoutMethod = 'Error: Alehandro !'
+      displayPayoutMethod = 'Error: Alejandro !'
     // console.log(inputPayout)
   }
 
