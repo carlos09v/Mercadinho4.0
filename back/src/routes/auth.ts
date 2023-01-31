@@ -36,8 +36,8 @@ export const authRoutes = async(fastify: FastifyInstance) => {
         })
 
         // Validate Email e Password in DB
-        if(!check) res.status(403).send({ message: 'Email não encontrado !'})
-        if(password !== check?.password) res.status(403).send({ message: 'Senha Incorreta !' })
+        if(!check) return res.status(403).send({ message: 'Email não encontrado !'})
+        if(password !== check?.password) return res.status(403).send({ message: 'Senha Incorreta !' })
 
 
         // --- PENSAVA Q PRECISAVA GUARDAR O TOKEN NO DB ---- 
@@ -92,17 +92,84 @@ export const authRoutes = async(fastify: FastifyInstance) => {
     })
 
     // Confirm Payout
-    fastify.delete('/confirm-payout', {
+    fastify.delete('/confirm-payout/:methodPayout', {
         onRequest:[authenticate]
     }, async(req, res) => {
+        const confirmPayoutParam = z.object({
+            methodPayout: z.string().transform(v => parseInt(v))
+        })
+        const confirmPayoutQuery = z.object({
+            finance: z.string().transform(v => parseInt(v))
+        })
+        const { methodPayout } = confirmPayoutParam.parse(req.params)
+        const { finance } = confirmPayoutQuery.parse(req.query)
+
+        // Validations
+        const prices = await prisma.cart.findMany({
+            where: {
+                userId: req.user.sub
+            },
+            select: {
+                productPrice: true
+            }
+        })
+        const user = await prisma.user.findUnique({
+            where: {
+                email: req.user.email
+            },
+            select: {
+                cash: true
+            }
+        })
+        let totPrice = 0
+        let totValueFinance: number | null = null
+        prices.forEach(p => totPrice += p.productPrice)
+        switch(methodPayout) {
+            case 1:
+                totPrice = totPrice - (totPrice * 10 / 100)
+                break
+            case 2:
+                totPrice = totPrice - (totPrice * 5 / 100)
+                break
+            case 3:
+                totPrice = totPrice / 2
+                break
+            case 4:
+                totPrice = totPrice + (totPrice * 20 / 100)
+                totValueFinance = totPrice / finance
+                break
+            default:
+                return res.status(400).send({ message: 'Error: Alejandro !'})
+        }
+        if(methodPayout !== 4 ? user!.cash < totPrice : totValueFinance! > user!.cash) return res.status(400).send({ messageError: 'Você não tem dinheiro suficiente na carteira :(' })
+
+        // Remove Cash and Delete Cart
         try {
+            const userCash = await prisma.user.update({
+                where: {
+                    email: req.user.email
+                },
+                data: {
+                    cash: {
+                        decrement: finance ? totPrice / finance : totPrice
+                    }
+                },
+                select: {
+                    cash: true
+                }
+            })
+            
+
             await prisma.cart.deleteMany({
                 where: {
                     userId: req.user.sub
                 }
             })
 
-            res.status(200).send({ message: 'Pagamento efetuado com sucesso !'})
+            res.status(200).send({ 
+                message: 'Pagamento efetuado com sucesso !',
+                userCash
+            })
         }catch (err) {
             console.log(err)
         }

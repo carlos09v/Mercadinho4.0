@@ -6,58 +6,44 @@ import Table from "../Cart/Table"
 import Input from "../Input"
 import { api } from "../../lib/axios"
 import { toast } from "react-toastify"
-import { CountContext } from "../../contexts/CountContext"
 import { useNavigate } from "react-router-dom"
+import clsx from "clsx"
+import { CountContext } from "../../contexts/CountContext"
 
 const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProps) => {
   const navigate = useNavigate()
-  const { user, totProd, setCart } = useContext(AuthContext)
+  const { user, totProd, setCart, setUser } = useContext(AuthContext)
   const { setProductsCount } = useContext(CountContext)
   // Hide BackButton 
   if (buttonBackRef?.current) buttonBackRef.current.style.display = 'none'
   // How many finances
   const [finance, setFinances] = useState('')
 
-  // Process Payout
-  const confirmPayout = async(e: FormEvent) => {
-    e.preventDefault()
-
-    try {
-      const { data } = await api.delete('/confirm-payout')
-
-      toast.success(data.message)
-      setCart(null)
-      setProductsCount(null)
-      navigate('/dashboard')
-    }catch (err) {
-      console.log(err)
-    }
-  }
 
   let displayPayoutMethod = ''
   let discountLabel = ''
   let jurosLabel = ''
-  let totLiquid
-  let totValueFinance
+  let totLiquid: number | null = null
+  let totValueFinance: number | null = null
   switch (inputPayout) {
     case '1':
       displayPayoutMethod = 'Á vista dinheiro/cheque 💵'
       discountLabel = '(10% de desconto)'
-      totLiquid = totProd-(totProd*10/100)
+      totLiquid = totProd - (totProd * 10 / 100)
       break
     case '2':
       displayPayoutMethod = `Á vista Cartão débito 💳`
       discountLabel = '(5% de desconto)'
-      totLiquid = totProd-(totProd*5/100)
+      totLiquid = totProd - (totProd * 5 / 100)
       break
     case '3':
       displayPayoutMethod = '2x no Cartão 💳'
-      totLiquid = totProd/2
+      totLiquid = totProd / 2
       break
     case '4':
       displayPayoutMethod = `Parcelar até 12x no Cartão 💳`
-      totLiquid = totProd+(totProd*20/100)
-      totValueFinance = totLiquid/parseInt(finance)
+      totLiquid = totProd + (totProd * 20 / 100)
+      totValueFinance = totLiquid / parseInt(finance)
       jurosLabel = '(20% de Juros)'
       break
     default:
@@ -65,6 +51,31 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
     // console.log(inputPayout)
   }
 
+  // Process Payout
+  const confirmPayout = async (e: FormEvent) => {
+    e.preventDefault()
+
+    // Validações
+    if(inputPayout === '4' && parseInt(finance) <= 12) {
+      if (totValueFinance! > user!.cash) return toast.error('Você não tem dinheiro suficiente, tente parcelar pra mais X ou faça mais dinheiro !')
+    }else {
+      if (totLiquid! > user!.cash) return toast.error('Você não tem dinheiro suficiente, tente dividir no Cartão !')
+    }
+    
+
+    try {
+      const { data } = await api.delete(`/confirm-payout/${inputPayout}?finance=${inputPayout === '4' ? finance : null}`)
+
+      toast.success(data.message)
+      setUser({ ...user!, cash: data.userCash.cash })
+      setCart(null)
+      setProductsCount(null)
+      navigate('/dashboard')
+    } catch (err: any) {
+      console.log(err)
+      if(err.response) toast.error(err.response.data.messageError)
+    }
+  }
 
   return (
     <div className="reviewPayout">
@@ -84,7 +95,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
               <p className="text-lg">- Juros: <span id="juros">{jurosLabel}</span></p>
             )}
             <div>
-              <h3 className="mt-3 text-lg text-center">- Total dos seus produtos: 
+              <h3 className="mt-3 text-lg text-center">- Total dos seus produtos:
                 <span id="discountGreen"> R$ {totProd.toFixed(2)} </span>
                 {inputPayout === '1' && (
                   <>
@@ -100,6 +111,13 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
                     <span id="discountGreen" className="text-xl font-bold"> R$ {totLiquid?.toFixed(2)}</span>
                   </>
                 )}
+                {inputPayout === '3' && (
+                  <>
+                    <span id="discountBlue">÷ 2</span>
+                    <span> =</span>
+                    <span id="discountGreen" className="text-xl font-bold"> R$ {totLiquid?.toFixed(2)}</span>
+                  </>
+                )}
                 {inputPayout === '4' && finance && parseInt(finance) >= 2 && parseInt(finance) <= 12 && (
                   <>
                     <span id="juros">+ 20%</span>
@@ -109,7 +127,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
                 )}
               </h3>
 
-              <Table hideDelete={true} />
+              <Table hideDelete />
             </div>
           </div>
 
@@ -119,15 +137,24 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
                 <div className="w-20 h-20 rounded-full bg-gray-300 border-2 dark:border-blue-500 border-purple-500 p-1 self-center">
                   <img src={user.avatarUrl} alt="AvatarUrl" className="w-full rounded-full hover:scale-105 duration-300" />
                 </div>
-              
+
                 <p>Email: <span className="dark:text-blue-500 font-semibold text-purple-400">{user.email}</span></p>
                 {user?.name && (
                   <p>Nome: <span className="dark:text-blue-500 font-semibold text-purple-400">{user.name}</span></p>
                 )}
-              
-                {/* <p>Carteira:</p> */}
+                {inputPayout === '4' ? (
+                  <p>Carteira: <span className={clsx("font-semibold", {
+                    ["dark:text-green-600 text-green-400"]: totValueFinance ? totValueFinance <= user.cash : null,
+                    ["dark:text-red-500 text-red-500"]: totValueFinance ? totValueFinance > user.cash : null
+                  })}>R$ {user.cash.toFixed(2)}</span></p>
+                ) : (
+                  <p>Carteira: <span className={clsx("font-semibold", {
+                    ["dark:text-green-600 text-green-400"]: totLiquid! <= user.cash,
+                    ["dark:text-red-500 text-red-500"]: totLiquid! > user.cash
+                  })}>R$ {user.cash.toFixed(2)}</span></p>
+                )}
               </div>
-              
+
               <div className="flex flex-col items-center gap-3 bg-slate-300 dark:bg-blue-600 rounded-b-3xl border-2 border-purple-500 dark:border-blue-600 p-2">
                 {inputPayout === '4' && (
                   <div className="dark:text-black">

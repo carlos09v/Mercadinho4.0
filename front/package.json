@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.2.0",
+    "clsx": "^1.2.1",
     "framer-motion": "^7.6.19",
     "nookies": "^2.5.2",
     "react": "^18.2.0",
@@ -41,12 +42,14 @@
     "7": "npm i framer-motion",
     "8": "npm i --save-dev @types/node",
     "9": "npm i react-modal",
-    "10": "npm i --save-dev @types/react-modal"
+    "10": "npm i --save-dev @types/react-modal",
+    "11": "npm i clsx"
   },
   "_comments": {
     "5": "Criar um cookie pra colocar o token JWT",
     "7": "Lib de animações, slides, etc",
     "8": "Pra usar .env (environment variables) !! Ñ precisa, o vite tem a própria .env(import.meta.env.VITE_SOME_KEY)",
-    "9": "Criar Modais"
+    "9": "Criar Modais",
+    "11": "Lib de Classes condicionais => (Acabei de aprender no NLW_Setup)"
   }
 }

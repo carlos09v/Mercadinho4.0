@@ -6,7 +6,7 @@ import { AiFillCloseSquare } from 'react-icons/ai'
 
 import Input from "../components/Input"
 import Logo from "../components/Logo"
-import LoginSvg from '../assets/login_re_4vu2.svg'
+import LoginSvg from '../assets/unDrawPics/login_re_4vu2.svg'
 import { api, sendEmailApi } from "../lib/axios"
 import { AuthContext } from "../contexts/AuthContext"
 import Modal from 'react-modal'
@@ -29,7 +29,7 @@ const Login = () => {
 
 
   // SignIn
-  const handleLogin = async(e: FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
 
     // Validadar dados
@@ -46,19 +46,24 @@ const Login = () => {
     e.preventDefault()
     let senha: string
 
-    if(emailUser === '') return toast.warn('Preencha o campo !')
+    if (emailUser === '') return toast.warn('Preencha o campo !')
 
     api.post('/forgot-password', {
-        email: emailUser
+      email: emailUser
     }).then(res => {
-        // console.log(res)
-        senha = res.data.passwordUser.password
-        sendEmailApi(emailUser, senha)
-        userDataRegister.email = ''
-        setShowModal(false)
+      // console.log(res)
+      senha = res.data.passwordUser.password
+      
+      const sendEmailProps = {
+        email: emailUser,
+        password: senha
+      }
+      sendEmailApi(sendEmailProps)
+      userDataRegister.email = ''
+      setShowModal(false)
     }).catch(err => {
-        // console.log(err)
-        if(err.response) return toast.error(err.response.data.message)
+      // console.log(err)
+      if (err.response) return toast.error(err.response.data.message)
     })
   }
 
@@ -89,7 +94,7 @@ const Login = () => {
               maxLength={20}
             />
             <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Acessar</button>
-      
+
             <p className="text-center mt-3 text-[#F50057] hover:underline cursor-pointer" onClick={() => setShowModal(true)}>Esqueceu a senha ?</p>
           </form>
           <div className="w-1/2">
@@ -99,11 +104,11 @@ const Login = () => {
         <p className="mt-12 text-center dark:text-[#ededed]">Ainda não possui uma conta? <Link className="text-purple-500 hover:scale105 duration-200" to='/create-account'>Clique aqui para criá-la.</Link></p>
       </div>
 
-      
+
       {/* Forgot Password Modal */}
       <Modal isOpen={showModal} overlayClassName="modalExterior" className="modalInterior">
         <AiFillCloseSquare className="modalIconClose" onClick={() => setShowModal(false)} />
-      
+
         <form onSubmit={e => sendEmail(e, userDataRegister.email)} className="flex flex-col gap-4 w-[500px]">
           <div className="flex gap-3 items-center">
             <label htmlFor="sendEmailInput" className="font-semibold dark:text-white">Email:</label>
@@ -112,7 +117,7 @@ const Login = () => {
           <button className="bg-[#F50057] hover:bg-[#f50056d7] duration-200" type="submit">Enviar</button>
         </form>
       </Modal>
-      
+
     </div>
   )
 }

@@ -43,7 +43,7 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
                                 <th className="text-lg">No.</th>
                                 <th></th>
                                 <th></th>
-                                <th>Nome do Prod.</th>
+                                <th>Produto</th>
                                 <th>Preço</th>
                             </tr>
                         </thead>

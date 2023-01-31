@@ -37,6 +37,8 @@ interface CountContextProps {
     getCartsCount: () => Promise<void>
     getProductsUserCount: () => Promise<void>
     resetCounts: () => void
+    cashCount: number
+    setCashCount: (value: React.SetStateAction<number>) => void
 }
 
 type SibeBarRefs = {

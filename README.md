@@ -15,6 +15,7 @@
         <li>tailwind css</li>
         <li>nookies</li>
         <li>framer-motion</li>
+        <li>clsx</li>
     </ul>
     <b>(Backend):</b>
     <ul>
