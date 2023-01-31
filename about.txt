@@ -9,17 +9,15 @@
 
 2. Dependencies
 	-- Front-end
-		2.1 - react-router-dom
-		2.2 - react-toastify
-		2.3 - react-icons
-		2.4 - axios
-		2.5 - styled-components (Ñ gostei de usar)
-		2.6 - tailwind css
-		2.7 - nookies
-		2.8 - framer-motion
-		2.9 - react-modal
-		2.10 - APIS =>
-			2.10.1 - SendGrid(send emails)
+		2.1 - react-router-dom, react-toastify, react-icons, react-modal
+		2.2 - axios
+		2.3 - styled-components (Ñ gostei de usar)
+		2.4 - tailwind css
+		2.5 - nookies
+		2.6 - framer-motion
+		2.7 - APIS =>
+			2.7.1 - SendGrid(send emails)
+		2.8 - clsx
 
 	-- Back-end
 		3.1 - typescript

@@ -20,7 +20,7 @@ if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 // to send the password user by the email
 // using SendGridAPI (50 emails/day) (Basic Plan)
-export const sendEmailApi = async (email: string, senha: string) => {
+export const sendEmailApi = async (sendEmailProps: SignInData) => {
     const options = {
         method: 'POST',
         url: 'https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send',
@@ -29,7 +29,7 @@ export const sendEmailApi = async (email: string, senha: string) => {
             'X-RapidAPI-Key': import.meta.env.VITE_XRAPID_API_KEY,
             'X-RapidAPI-Host': import.meta.env.VITE_XRAPID_API_HOST_SENDGRID
         },
-        data: `{"personalizations":[{"to":[{"email":"${email}"}],"subject":"Sua senha!"}],"from":{"email":"mercadinhoServices@gmail.com"},"content":[{"type":"text/plain","value":"Ooi, tudo bom?? Sua senha é ${senha}"}]}`
+        data: `{"personalizations":[{"to":[{"email":"${sendEmailProps.email}"}],"subject":"Sua senha!"}],"from":{"email":"mercadinhoServices@gmail.com"},"content":[{"type":"text/plain","value":"Ooi, tudo bom?? Sua senha é ${sendEmailProps.password}"}]}`
     }
 
     // Precisa da extensão do chrome de Allow CORS: Access-Control-Allow-Origin

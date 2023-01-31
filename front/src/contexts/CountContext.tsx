@@ -12,12 +12,14 @@ export function CountProvider({ children }: { children: ReactNode }) {
     const [countUser, setCountUser] = useState<number | null>(null)
     const [countCart, setCountCart] = useState<number | null>(null)
     const [productsCount, setProductsCount] = useState<number | null>(null)
+    const [cashCount, setCashCount] = useState(0)
 
     // Reset
     const resetCounts = () => {
         setCountCart(null)
         setCountUser(null)
         setProductsCount(null)
+        setCashCount(0)
     }
 
     const getUsersCount = async () => {
@@ -37,7 +39,7 @@ export function CountProvider({ children }: { children: ReactNode }) {
 
 
     return (
-        <CountContext.Provider value={{ countUser, countCart, getCartsCount, getUsersCount, getProductsUserCount, productsCount, resetCounts, setProductsCount }}>
+        <CountContext.Provider value={{ countUser, countCart, getCartsCount, getUsersCount, getProductsUserCount, productsCount, resetCounts, setProductsCount, cashCount, setCashCount }}>
             {children}
         </CountContext.Provider>
     )

@@ -27,7 +27,7 @@
     }
 
     .register-header {
-        @apply max-w-xl w-[80%] mx-auto flex justify-center items-center mb-12 border-b-2 rounded-2xl border-[#111218] dark:border-[#ededed]
+        @apply max-w-xl w-[80%] mx-auto flex justify-center items-center mb-12 border-b-2 rounded-2xl border-[#111218] dark:border-whiteModified
     }
 
 

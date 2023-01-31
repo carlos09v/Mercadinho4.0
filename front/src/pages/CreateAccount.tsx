@@ -6,7 +6,7 @@ import { parseCookies } from "nookies"
 
 import Input from "../components/Input"
 import Logo from "../components/Logo"
-import CreateSvg from '../assets/create_re_57a3.svg'
+import CreateSvg from '../assets/unDrawPics/create_re_57a3.svg'
 
 const CreateAccount = () => {
   const [userDataRegister, setUserDataRegister] = useState({ email: '', password: '', confirmPassword: '' })

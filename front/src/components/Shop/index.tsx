@@ -1,13 +1,13 @@
 import { motion } from "framer-motion"
 import { FormEvent, useContext, useLayoutEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
-import { CartProps } from "../@types/user"
-import { api } from "../lib/axios"
+import { CartProps } from "../../@types/user"
+import { api } from "../../lib/axios"
 import { MdShoppingCart } from 'react-icons/md'
-import Input from "./Input"
-import { CountContext } from "../contexts/CountContext"
-import { AuthContext } from "../contexts/AuthContext"
-import { SibeBarRefs } from "../@types/web"
+import Input from "../Input"
+import { CountContext } from "../../contexts/CountContext"
+import { AuthContext } from "../../contexts/AuthContext"
+import { SibeBarRefs } from "../../@types/web"
 
 
 const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
@@ -91,14 +91,14 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
 
   return (
     <div className="divMain flex flex-col items-center max-w-4xl">
-      {productsCount && (
+      {productsCount ? (
         <button className="btn absolute top-20 right-3 !max-w-[160px] !py-1 !px-1 dark:bg-blue-500/90 bg-[#E34382]/90 flex flex-col items-center justify-center gap-1" onClick={() => setToggleStage !== undefined ? setToggleStage('Cart') : null}>
           <span className="text-green-500 px-4 py-1 bg-[#111218e1] text-3xl shadow-lg rounded-md">{productsCount}</span>
           <div className="flex gap-2 items-center">
             Ver carrinho <MdShoppingCart />
           </div>
         </button>
-      )}
+      ): (null)}
 
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
       <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">- Bem-vindo(a) 😁 !</h1>
@@ -166,7 +166,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
 
       <span className="font-semibold text-lg underline text-black dark:text-gray-200">OU</span>
 
-      <div className="register-container !min-h-0 mt-3">
+      <div className="register-container !min-h-[270px] mt-3 relative max-w-[95%]">
         <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400">Adicionar produto</h1>
         {productsCount && productsCount >= 24 ? (
           <div className="text-lg font-semibold text-center">
@@ -178,7 +178,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             <p className="mt-3"></p>
             <div className="flex gap-10 justify-center">
               <div className="flex gap-5 items-center font-bold">
-                <label htmlFor="productName" className="mb-4 dark:text-[#ededed]">Nome:</label>
+                <label htmlFor="productName" className="mb-4 dark:text-whiteModified">Nome:</label>
                 <Input
                   id="productName"
                   placeholder="Ex: Amendoim"
@@ -190,7 +190,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
                 />
               </div>
               <div className="flex gap-5 items-center font-bold">
-                <label htmlFor="productPrice" className="mb-4 dark:text-[#ededed]">Preço:</label>
+                <label htmlFor="productPrice" className="mb-4 dark:text-whiteModified">Preço:</label>
                 <Input
                   id="productPrice"
                   placeholder="Ex: 3.78"
@@ -207,8 +207,8 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             </div>
 
             <div className="mx-auto max-w-[30%] flex flex-col">
-              <label className="mt-1 text-center font-bold" htmlFor="categoryOptions">Escolha uma Categoria:</label>
-              <select className="mt-2 dark:text-black rounded" defaultValue={cartDataRegister.inputCategory} name="categoryOptions" id="categoryOptions" onChange={e => setCartDataRegister({ ...cartDataRegister, inputCategory: (e.target as HTMLSelectElement).value })}>
+              <label className="mt-1 text-center font-bold dark:text-whiteModified" htmlFor="categoryOptions">Escolha uma Categoria:</label>
+              <select className="mt-2 dark:text-black rounded" value={cartDataRegister.inputCategory} name="categoryOptions" id="categoryOptions" onChange={e => setCartDataRegister({ ...cartDataRegister, inputCategory: (e.target as HTMLSelectElement).value })}>
                 <option className='text-center' value="" >--- ⬇️ ⬇️ ---</option>
                 <option value="Food">Comida</option>
                 <option value="Eletronics">Eletrônicos</option>
@@ -222,8 +222,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             </div>
 
 
-
-            <button type="submit" className="bg-purple-600 mx-auto block max-w-[35%] text-base mt-6">Adicionar ao carrinho</button>
+            <button type="submit" className="bg-purple-600 mx-auto block max-w-[30%] text-base mt-8 absolute right-3 bottom-3">Adicionar ao carrinho</button>
           </form>
         )}
       </div>

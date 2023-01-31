@@ -68,6 +68,32 @@ export const userRoutes = async (fastify: FastifyInstance) => {
         res.status(200).send({ user, message: 'Dados salvos com sucesso!' })
     })
 
+    // Save Money
+    fastify.put('/save-money', {
+        onRequest: [authenticate]
+    }, async (req, res) => {
+        const moneyBody = z.object({
+            cash: z.number()
+        })
+        const { cash } = moneyBody.parse(req.body)
+
+        const user = await prisma.user.update({
+            where: {
+                email: req.user.email
+            },
+            data: {
+                cash: {
+                    increment: cash
+                }
+            },
+            select: {
+                cash: true
+            }
+        })
+
+        res.status(200).send({ user, message: 'Dinheiro salvo na carteira!' })
+    })
+
     // Forgot Password
     fastify.post('/forgot-password', async (req, res) => {
         const createReqBody = z.object({
@@ -84,7 +110,7 @@ export const userRoutes = async (fastify: FastifyInstance) => {
                 password: true
             }
         })
-        if (!passwordUser) res.status(404).send({ message: 'Email não encontrado !' })
+        if (!passwordUser) return res.status(404).send({ message: 'Email não encontrado !' })
 
         return { passwordUser }
     })
@@ -98,7 +124,7 @@ export const userRoutes = async (fastify: FastifyInstance) => {
         })
         const { email } = emailParams.parse(req.params)
 
-        if(email !== req.user.email) res.status(404).send({ message: 'Email Incorreto ou não existe !'})
+        if(email !== req.user.email) return res.status(404).send({ message: 'Email Incorreto ou não existe !'})
 
         try {
             const deleteCart = prisma.cart.deleteMany({

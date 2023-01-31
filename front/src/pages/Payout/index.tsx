@@ -2,7 +2,6 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Logo from "../../components/Logo"
 import './Payout.css'
-import { FaCashRegister } from 'react-icons/fa'
 import { IoMdArrowBack } from 'react-icons/io'
 import { AuthContext } from "../../contexts/AuthContext"
 import ChoosePayout from "../../components/Payout/ChoosePayout"

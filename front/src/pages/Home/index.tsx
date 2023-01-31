@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState, useContext } from "react"
 import { motion } from 'framer-motion'
 
 import { toys2Img, foodImg, headphoneImg ,shampoosImg, shoeImg, watchesImg, fruitsImg, toys1Img, controllersImg, patinsImg, snacksImg, drinksImg } from '../../assets/HomeGallery'
-import HomeSvg from '../../assets/sweet_home.svg'
+import HomeSvg from '../../assets/unDrawPics/sweet_home.svg'
 import { CountContext } from "../../contexts/CountContext"
 import './Home.css'
 
@@ -38,7 +38,7 @@ const Home = () => {
 
       <main className="divMain max-w-7xl">
         <div className="flex justify-around items-center">
-          <div className="dark:text-[#ededed] text-[#111218]">
+          <div className="dark:text-whiteModified text-blackModified">
             <h1 className="border-none !text-4xl">Simulando um</h1>
             <h1 className="border-[#111218] dark:border-blue-400 !text-5xl">E-commerce</h1>
             
