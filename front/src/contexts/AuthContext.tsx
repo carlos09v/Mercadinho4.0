@@ -64,7 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await getUser() // Receber o UserData
             getProductsUserCount() // Get ProductsCount
         } catch (err: any) {
-            if (err.response) return toast.error(err.response.data.message)
+            if (err.response) toast.error(err.response.data.message)
+            return false
         }
 
     }

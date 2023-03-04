@@ -6,7 +6,7 @@ interface AuthContextDataProps {
     // signed?: boolean
     getUser: () => Promise<void>
     getCart: () => Promise<void>
-    signIn: (data: SignInData) => Promise<JSX.Element | void | Id>
+    signIn: (data: SignInData) => Promise<JSX.Element | void | Id | boolean>
     signOut: () => void
     user: UserProps | null
     cart: CartProps[] | null

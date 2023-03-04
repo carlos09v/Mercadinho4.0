@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement } from "react"
+import { ReactElement, InputHTMLAttributes } from "react"
 
 // ---- WebProps
 type SideBarIconProps = {
@@ -9,21 +9,17 @@ type SideBarIconProps = {
     styleTooltip?: string
     deleteCookie?: boolean
     isActive?: boolean
+    type: 'header' | 'aside'
+    innerRef?: React.RefObject<HTMLDivElement>
+    refIconPrint?: React.RefObject<HTMLButtonElement>
+    setToggleStage?: (value: React.SetStateAction<string>) => void
+    toggleStage?: string
+    isHidden?: boolean
 }
 
-interface InputProps {
-    id: string
-    name?: string
-    labelName?: string
-    placeholder?: string
-    value?: string | number | undefined
-    type: string
-    step?: string
-    autoComplete?: string
-    maxLength?: number
-    max?: number
-    min?: number
-    onChange?: (e: FormEvent) => void
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    labelname?: string
     productNameIcon?: ReactElement
     productPriceIcon?: ReactElement
 }

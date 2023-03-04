@@ -143,7 +143,7 @@ export const authRoutes = async(fastify: FastifyInstance) => {
         }
         if(methodPayout !== 4 ? user!.cash < totPrice : totValueFinance! > user!.cash) return res.status(400).send({ messageError: 'Você não tem dinheiro suficiente na carteira :(' })
 
-        // Remove Cash and Delete Cart
+        //  Remove Cash and Add to BackupCart and Delete Cart
         try {
             const userCash = await prisma.user.update({
                 where: {
@@ -155,16 +155,30 @@ export const authRoutes = async(fastify: FastifyInstance) => {
                     }
                 },
                 select: {
-                    cash: true
+                    cash: true,
+                    cart: true
                 }
             })
-            
+            // userCash.cart.map(cart => {
+            //     if(!cart.backupCartId) {
+                    
+            //     }
+            // })
 
+            // await prisma.backupCart.create({
+            //     data: {
+            //         backupCart: {
+                        
+            //         }
+            //     }
+            // })
+            
             await prisma.cart.deleteMany({
                 where: {
                     userId: req.user.sub
                 }
             })
+            
 
             res.status(200).send({ 
                 message: 'Pagamento efetuado com sucesso !',

@@ -24,8 +24,10 @@ const Input = (props: InputProps) => {
 
   return (
     <div key={props.id} className="flex flex-col gap-2 mb-6 relative">
-      <label className="font-bold text-[#111218] dark:text-[#ededed] text-base" htmlFor={props.id}>{props.labelName}</label>
-      <input id={props.id} name={props.type === 'radio' ? props.name : props.id} value={ props.value} className="p-2 border-none rounded relative" type={props.type} placeholder={props.placeholder} onChange={props.onChange} maxLength={props.maxLength} ref={props.id === 'password' ? inputRef : undefined} step={props.type === 'number' ? props.step : undefined} min={props.type === 'number' ? props.min : undefined} max={props.type === 'number' ? props.max : undefined}  />
+      {props.labelname && (
+        <label className="font-bold text-[#111218] dark:text-[#ededed] text-base" htmlFor={props.id}>{props.labelname}</label>
+      )}
+      <input className="p-2 border-none rounded relative" name={props.type === 'radio' ? props.name : props.id} ref={props.id === 'password' ? inputRef : undefined} {...props}  />
       {/* {props.productNameIcon || props.productPriceIcon } */}
 
       {props.id === 'password' && icon && (
@@ -34,7 +36,6 @@ const Input = (props: InputProps) => {
       {props.id === 'password' && !icon && (
         <AiOutlineEyeInvisible className="absolute top-[60%] right-3 text-xl fill-gray-500 hover:fill-gray-400 duration-200" onClick={tooglePassword} />
       )}
-
 
     </div>
   )

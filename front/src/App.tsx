@@ -14,7 +14,7 @@ const App = () => {
       <AuthProvider>
         {/* <RouterProvider router={router} /> */}
         <AppRouter />
-        <ToastContainer autoClose={1500} />
+        <ToastContainer autoClose={1500} theme="colored" />
         <ToggleTheme />
       </AuthProvider>
     </CountProvider>

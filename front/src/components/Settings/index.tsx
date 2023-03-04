@@ -16,6 +16,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
   const { user, setUser, signOut } = useContext(AuthContext)
   const [showModal, setShowModal] = useState(false)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
 
   // Pegar o User Atualizado ao entrar no Settings
@@ -45,12 +46,14 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
     if(user?.avatarUrl === userDataRegister.avatarUrl && user?.name === userDataRegister.name) return toast.warn('Nenhuma alteração feita!')
 
     // Update
+    setLoading(true)
     api.put('/update-user', {
       name: userDataRegister.name,
       avatarUrl: userDataRegister.avatarUrl
     }).then(res => {
       setUser(res.data.user)
       toast.success(res.data.message)
+      setLoading(false)
     }).catch(err => {
       console.log(err)
     })
@@ -62,13 +65,15 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
     if(confirmEmail === '') return toast.warn('Preencha o campo !')
 
     try {
+      setLoading(true)
       const { data } = await api.delete(`/delete-user/${confirmEmail}`)
 
       toast.success(data.message)
       signOut()
       navigate('/')
     }catch (err: any) {
-      if(err.response) return toast.error(err.response.data.message)
+      if(err.response) toast.error(err.response.data.message)
+      setLoading(false)
     }
   }
 
@@ -93,7 +98,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
 
         <form onSubmit={handleSaveUser} className="flex flex-col w-6/12 p-4">
           <Input
-            labelName="Nome:"
+            labelname="Nome:"
             id="name"
             placeholder="Insira seu Nome"
             maxLength={20}
@@ -103,7 +108,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
           />
 
           <Input
-            labelName="Foto de Perfil:"
+            labelname="Foto de Perfil:"
             id="avatar"
             placeholder="Insira a URL da Imagem"
             type='url'
@@ -111,13 +116,13 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
             onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, avatarUrl: (e.target as HTMLTextAreaElement).value })}
           />
 
-          <button type="submit" className="bg-green-600 hover:bg-green-500 duration-200">Enviar</button>
+          <button disabled={loading} type="submit" className="bg-green-600 hover:bg-green-500 duration-200 disabled:opacity-50">Enviar</button>
         </form>
       </div>
 
       <hr className="my-6 bg-purple-500" />
 
-      <div className="flex justify-around  dark:text-[#ededed] p-2">
+      <div className="flex justify-around dark:text-[#ededed] p-2">
         <div className="border-r-2 border-[#111218] dark:border-[#ededed] w-[50%]">
           <h2 className="text-center mb-4 max-w-[200px] border-b-2 border-purple-500 dark:border-blue-400 text-3xl rounded-b-xl">Interface:</h2>
           <div className="flex gap-8 border border-black dark:border-blue-400 bg-purple-500 dark:bg-blue-600/70 p-3 rounded font-bold items-center justify-center max-w-sm mx-auto text-white">
@@ -157,7 +162,7 @@ const Settings = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef }
             <label htmlFor="emailDeleteAccount" className="dark:text-white">Email:</label>
             <input type="email" id="emailDeleteAccount" placeholder="Insira o seu email para confirmar..." className="p-3 rounded-2xl w-full" onChange={(e: FormEvent) => setConfirmEmail((e.target as HTMLTextAreaElement).value) } />
           </div>
-          <button className="btn bg-red-500 mx-auto block mt-4" type="submit">Excluir</button>
+          <button disabled={loading} className="btn bg-red-500 mx-auto block mt-6 disabled:opacity-50" type="submit">Excluir</button>
         </form>
       </Modal>
 

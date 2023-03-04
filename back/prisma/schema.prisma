@@ -36,8 +36,9 @@ model User {
 
 // Carrinho de Compra
 model Cart {
-  id     String @id @default(cuid())
-  userId String
+  id           String  @id @default(cuid())
+  userId       String
+  backupCartId String?
 
   productName  String
   productPrice Float
@@ -45,9 +46,19 @@ model Cart {
   addedAt      DateTime   @default(now())
 
   // Relacionamentos
-  user User @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
+  backupCart BackupCart? @relation(fields: [backupCartId], references: [id])
 
-  @@index([userId]) // In MySQL
+  // In MySQL
+  @@index([userId])
+  @@index([backupCartId])
+}
+
+// Backup do Carrinho de Compra => nunca vai ser apagado
+model BackupCart {
+  id String @id @default(cuid())
+
+  backupCart Cart[]
 }
 
 enum Categories {
