@@ -15,17 +15,20 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
     const lastProductIndex = currentPage * productsPerPage
     const firstProductIndex = lastProductIndex - productsPerPage
     const currentProducts = cart?.slice(firstProductIndex, lastProductIndex)
+    const [loading, setLoading] = useState(false)
 
     // Delete Product
     const deleteProduct = async (e: FormEvent, id: string) => {
         e.preventDefault()
 
         try {
+            setLoading(true)
             const { data } = await api.delete(`/delete-product/${id}`)
 
             toast.success(data.message)
             await getCart()
             setProductsCount(null)
+            setLoading(false)
         } catch (err: any) {
             if (err.response) return toast.error(err.response.data.errorMessage)
         }
@@ -55,7 +58,7 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
                                     <td>{new Date(prod.addedAt).toLocaleDateString()}</td>
                                     <td>{prod.productName}</td>
                                     <td className="dark:text-green-400 text-blue-700">R$ {prod.productPrice}</td>
-                                    {!hideDelete && (
+                                    {!hideDelete && !loading && (
                                         <td className="absolute ml-3 rounded p-2 bg-red-500 cursor-pointer hover:scale-105 duration-300 group" onClick={e => deleteProduct(e, prod.id)}>
                                             <AiFillDelete className="fill-white/90 hover:fill-white text-lg duration-300" />
                                             <span className="deleteProduct-tooltip group-hover:scale-100 left-12 top-0">Excluir</span>
