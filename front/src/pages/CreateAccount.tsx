@@ -11,6 +11,7 @@ import CreateSvg from '../assets/unDrawPics/create_re_57a3.svg'
 const CreateAccount = () => {
   const [userDataRegister, setUserDataRegister] = useState({ email: '', password: '', confirmPassword: '' })
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
   // Verificar se o Cookie com o Token existe
   useEffect(() => {
@@ -35,6 +36,7 @@ const CreateAccount = () => {
 
     // Register
     try {
+      setLoading(true)
       const { data } = await api.post('/create-account', {
         email: userDataRegister.email,
         password: userDataRegister.password
@@ -47,7 +49,8 @@ const CreateAccount = () => {
         toast.error('Erro ao cadastrar usuário!')
       }
     } catch (err: any) {
-      if(err.response) return toast.error(err.response.data.message)
+      if(err.response) toast.error(err.response.data.message)
+      setLoading(false)
     }
   }
 
@@ -63,14 +66,14 @@ const CreateAccount = () => {
           <form className="flex flex-col justify-center w-1/2" onSubmit={handleRegister}>
             <Input
               id="email"
-              labelName="Email:"
+              labelname="Email:"
               placeholder="Digite o seu email..."
               type="email"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })}
             />
             <Input
               id="password"
-              labelName="Senha:"
+              labelname="Senha:"
               placeholder="Digite a sua senha..."
               type="password"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, password: (e.target as HTMLTextAreaElement).value })}
@@ -78,13 +81,13 @@ const CreateAccount = () => {
             />
             <Input
               id="confirm_password"
-              labelName="Confirme a sua senha:"
+              labelname="Confirme a sua senha:"
               placeholder="Confirme a sua senha..."
               type="password"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, confirmPassword: (e.target as HTMLTextAreaElement).value })}
               maxLength={20}
             />
-            <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Criar conta</button>
+            <button disabled={loading} className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200 disabled:opacity-50" type="submit">Criar conta</button>
           </form>
           <div className="w-1/2">
             <img className="w-full" src={CreateSvg} alt="CreateSvg" />

@@ -15,8 +15,10 @@ Modal.setAppElement('#root') // Pegar do root
 const Login = () => {
   const [showModal, setShowModal] = useState(false)
   const [userDataRegister, setUserDataRegister] = useState({ email: '', password: '' })
+  const [forgotEmail, setForgotEmail] = useState('')
   const { signIn } = useContext(AuthContext)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
   // Verificar se o Cookie com o Token existe
   useEffect(() => {
@@ -29,7 +31,7 @@ const Login = () => {
 
 
   // SignIn
-  const handleLogin = async (e: FormEvent) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault()
 
     // Validadar dados
@@ -38,7 +40,9 @@ const Login = () => {
     if (userDataRegister.password.length < 6 || userDataRegister.password.length > 20) return toast.warn('A senha precisa ter entre 6 e 20 caracteres !')
 
     // Logar
-    await signIn(userDataRegister)
+    setLoading(true)
+    signIn(userDataRegister)
+      .then(res => !res ? setLoading(false) : setLoading(true))
   }
 
   // Enviar senha do usuário pro email
@@ -48,9 +52,10 @@ const Login = () => {
 
     if (emailUser === '') return toast.warn('Preencha o campo !')
 
+    setLoading(true)
     api.post('/forgot-password', {
       email: emailUser
-    }).then(res => {
+    }).then(async (res) => {
       // console.log(res)
       senha = res.data.passwordUser.password
       
@@ -58,12 +63,13 @@ const Login = () => {
         email: emailUser,
         password: senha
       }
-      sendEmailApi(sendEmailProps)
-      userDataRegister.email = ''
+      await sendEmailApi(sendEmailProps)
+      setLoading(false)
       setShowModal(false)
     }).catch(err => {
       // console.log(err)
-      if (err.response) return toast.error(err.response.data.message)
+      if (err.response) toast.error(err.response.data.message)
+      return setLoading(false)
     })
   }
 
@@ -78,7 +84,7 @@ const Login = () => {
           <form className="flex flex-col justify-center w-1/2" onSubmit={handleLogin}>
             <Input
               id="email"
-              labelName="Email:"
+              labelname="Email:"
               placeholder="Digite o seu email..."
               type="email"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })}
@@ -86,14 +92,14 @@ const Login = () => {
             />
             <Input
               id="password"
-              labelName="Senha:"
+              labelname="Senha:"
               placeholder="********"
               type="password"
               onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, password: (e.target as HTMLTextAreaElement).value })}
               value={userDataRegister.password}
               maxLength={20}
             />
-            <button className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200" type="submit">Acessar</button>
+            <button disabled={loading} className="bg-[#3366ff] hover:bg-[#3366ffe3] duration-200 disabled:opacity-50" type="submit">Acessar</button>
 
             <p className="text-center mt-3 text-[#F50057] hover:underline cursor-pointer" onClick={() => setShowModal(true)}>Esqueceu a senha ?</p>
           </form>
@@ -109,12 +115,12 @@ const Login = () => {
       <Modal isOpen={showModal} overlayClassName="modalExterior" className="modalInterior">
         <AiFillCloseSquare className="modalIconClose" onClick={() => setShowModal(false)} />
 
-        <form onSubmit={e => sendEmail(e, userDataRegister.email)} className="flex flex-col gap-4 w-[500px]">
+        <form onSubmit={e => sendEmail(e, forgotEmail)} className="flex flex-col gap-4 w-[500px]">
           <div className="flex gap-3 items-center">
             <label htmlFor="sendEmailInput" className="font-semibold dark:text-white">Email:</label>
-            <input type="email" id="sendEmailInput" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full dark:placeholder:text-blue-400" onChange={(e: FormEvent) => setUserDataRegister({ ...userDataRegister, email: (e.target as HTMLTextAreaElement).value })} />
+            <input type="email" id="sendEmailInput" placeholder="Insira o seu email..." className="p-2 rounded-2xl w-full" onChange={e => setForgotEmail(e.target.value)} />
           </div>
-          <button className="bg-[#F50057] hover:bg-[#f50056d7] duration-200" type="submit">Enviar</button>
+          <button disabled={loading} className="bg-[#F50057] hover:bg-[#f50056d7] duration-200 disabled:opacity-50 mt-4" type="submit">Enviar</button>
         </form>
       </Modal>
 

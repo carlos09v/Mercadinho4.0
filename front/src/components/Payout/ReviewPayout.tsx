@@ -18,6 +18,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
   if (buttonBackRef?.current) buttonBackRef.current.style.display = 'none'
   // How many finances
   const [finance, setFinances] = useState('')
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
 
   let displayPayoutMethod = ''
@@ -64,6 +65,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
     
 
     try {
+      setLoading(true)
       const { data } = await api.delete(`/confirm-payout/${inputPayout}?finance=${inputPayout === '4' ? finance : null}`)
 
       toast.success(data.message)
@@ -74,6 +76,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
     } catch (err: any) {
       console.log(err)
       if(err.response) toast.error(err.response.data.messageError)
+      setLoading(false)
     }
   }
 
@@ -160,7 +163,7 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
                   <div className="dark:text-black">
                     <Input
                       id="parcelasNumber"
-                      labelName="Parcelar pra quantas X?"
+                      labelname="Parcelar pra quantas X?"
                       placeholder="Ate 12x..."
                       type="number"
                       onChange={e => setFinances((e.target as HTMLInputElement).value)}
@@ -172,14 +175,14 @@ const ReviewPayout = ({ setCurrentStep, buttonBackRef, inputPayout }: PayoutProp
                 {inputPayout !== '4' && (
                   <>
                     <p>Confirmar Pagamento ?</p>
-                    <button className="btn bg-green-600 text-sm w-[70px] duration-300 hover:bg-green-500" onClick={confirmPayout}>Sim</button>
+                    <button disabled={loading} className="btn bg-green-600 text-sm w-[70px] duration-300 hover:bg-green-500 disabled:opacity-50" onClick={confirmPayout}>Sim</button>
                     <p></p>
                   </>
                 )}
                 {inputPayout === '4' && finance && parseInt(finance) >= 2 && parseInt(finance) <= 12 && (
                   <>
                     <p>Confirmar Pagamento ?</p>
-                    <button className="btn bg-green-600 text-sm w-[70px] duration-300 hover:bg-green-500" onClick={confirmPayout}>Sim</button>
+                    <button disabled={loading} className="btn bg-green-600 text-sm w-[70px] duration-300 hover:bg-green-500 disabled:opacity-50" onClick={confirmPayout}>Sim</button>
                     <p></p>
                   </>
                 )}

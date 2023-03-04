@@ -17,6 +17,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
   const [cartDataRegister, setCartDataRegister] = useState({ productName: '', productPrice: '', inputCategory: '' })
   const { productsCount, getProductsUserCount } = useContext(CountContext)
   const { user, getUser, setCart } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
   const carousel = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
@@ -74,6 +75,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
     if (cartDataRegister.productName.length <= 2 || cartDataRegister.productName.length > 16) return toast.warn('O NOME precisa ter entre 2 e 16 dígitos !')
 
     try {
+      setLoading(true)
       const { data } = await api.post('/create-product', {
         productName: cartDataRegister.productName,
         productPrice: parseFloat(cartDataRegister.productPrice),
@@ -84,6 +86,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
       getProductsUserCount()
       setCart(null) // Resetar o setCart pra ele fazer outra request qndo entrar no cart
       setCartDataRegister({ productPrice: '', productName: '', inputCategory: '' })
+      setLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -109,7 +112,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
           id="search"
           placeholder="Procurar produto..."
           type="text"
-          onChange={e => setSearch((e.target as HTMLTextAreaElement).value)}
+          onChange={e => setSearch(e.target.value)}
           value={search}
         />
 
@@ -123,7 +126,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             id="filter"
             placeholder="Buscar..."
             type="text"
-            onChange={e => setFilter((e.target as HTMLTextAreaElement).value)}
+            onChange={e => setFilter(e.target.value)}
             value={filter}
           />
         </div>
@@ -167,7 +170,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
       <span className="font-semibold text-lg underline text-black dark:text-gray-200">OU</span>
 
       <div className="register-container !min-h-[270px] mt-3 relative max-w-[95%]">
-        <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400">Adicionar produto</h1>
+        <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400 mb-6">Adicionar produto</h1>
         {productsCount && productsCount >= 24 ? (
           <div className="text-lg font-semibold text-center">
             <p className="text-purple-500 dark:text-purple-400 mt-2">- Você atingiu o limite máximo de produtos no carrinho :( </p>
@@ -175,7 +178,6 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
           </div>
         ) : (
           <form onSubmit={handleCartRegister} className="mx-auto">
-            <p className="mt-3"></p>
             <div className="flex gap-10 justify-center">
               <div className="flex gap-5 items-center font-bold">
                 <label htmlFor="productName" className="mb-4 dark:text-whiteModified">Nome:</label>
@@ -201,7 +203,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
                   min={0.01}
                   onChange={(e: FormEvent) => setCartDataRegister({ ...cartDataRegister, productPrice: (e.target as HTMLInputElement).value })}
                   value={cartDataRegister.productPrice}
-                // productPriceIcon={<MdAttachMoney className="absolute text-xl left-7 fill-white" />}
+                  // productPriceIcon={<MdAttachMoney className="absolute text-xl left-7 fill-white" />}
                 />
               </div>
             </div>
@@ -222,7 +224,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             </div>
 
 
-            <button type="submit" className="bg-purple-600 mx-auto block max-w-[30%] text-base mt-8 absolute right-3 bottom-3">Adicionar ao carrinho</button>
+            <button disabled={loading} type="submit" className="bg-purple-600 mx-auto block max-w-[30%] text-base mt-8 absolute right-3 bottom-3 disabled:opacity-50">Adicionar ao carrinho</button>
           </form>
         )}
       </div>

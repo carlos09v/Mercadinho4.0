@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from "react"
+import { useContext, useLayoutEffect, useState } from "react"
 import { SibeBarRefs } from "../../@types/web"
 import { CountContext } from "../../contexts/CountContext"
 import Tree from '../../assets/tree1-unsplash.jpg'
@@ -10,15 +10,18 @@ import { toast } from "react-toastify"
 const Farm = ({ asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
   const { cashCount, setCashCount } = useContext(CountContext)
   const { setUser, user } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false) // Loading to disable the button and prevent make another request
 
   const saveMoney = async () => {
     try {
+      setLoading(true)
       const { data } = await api.put('/save-money', {
         cash: cashCount
       })
 
       setUser({ ...user!, cash: data.user.cash })
       setCashCount(0)
+      setLoading(false)
       toast.success(data.message)
     } catch (error) {
       console.log(error)
@@ -45,7 +48,7 @@ const Farm = ({ asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
       </div>
 
       {cashCount ? (
-        <button onClick={saveMoney} className="btn bg-purple-500 mt-4">Salvar na Carteira</button>
+        <button disabled={loading} onClick={saveMoney} className="btn bg-purple-500 mt-4 disabled:opacity-50">Salvar na Carteira</button>
       ): (
         <div className="dark:text-whiteModified flex flex-col items-center">
           <p>👆 Clique na imagem para fazer dinheiro 👆</p>

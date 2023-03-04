@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && node dist/src/server.js",
+    "build": "tsup src",
+    "start": "node dist/server.js",
     "postinstall": "prisma generate"
   },
   "prisma": {
@@ -24,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "prisma": "^4.7.1",
+    "tsup": "^6.6.3",
     "tsx": "^3.12.1",
     "typescript": "^4.9.3"
   },
@@ -45,7 +50,8 @@
     "14": "pscale branch promote mercadinho4_0-db main",
     "15": "pscale branch create mercadinho4_0-db initial-setup",
     "16": "pscale connect mercadinho4_0-db initial-setup --port 3309",
-    "17": "npx prisma db push"
+    "17": "npx prisma db push",
+    "18": "npm i tsup -D"
   },
   "_comments": {
     "3": "tsx compila o codigo e executa automaticamente",
@@ -58,6 +64,7 @@
     "14": "Dizer q a branch principal (main) é a prod",
     "15": "Criar uma branch de desenvolvimento",
     "16": "Deixar o DB no ar",
-    "17": "Subir o Schema pro DB pscale => pra fzer isso tive q mudar o DB de sqlite pra mysql"
+    "17": "Subir o Schema pro DB pscale => pra fzer isso tive q mudar o DB de sqlite pra mysql",
+    "18": "Fazer o Build => https://www.youtube.com/watch?v=pmXfvd6Zqg4&t=281s (video q me salvou)"
   }
 }
