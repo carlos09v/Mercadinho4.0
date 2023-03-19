@@ -17,21 +17,29 @@ const Dashboard = () => {
   const headerRef = useRef<HTMLDivElement>(null)
   const asideIconPrintRef = useRef<HTMLButtonElement>(null)
   const headerIconPrintRef = useRef<HTMLButtonElement>(null)
-  let isHeader = false
 
   useLayoutEffect(() => {
-    localStorage.getItem('sidebar') === 'header' ? isHeader = true : isHeader = false
+    // Colocar o sidebar type no localstorage caso ñ tenha
+    if (!localStorage.getItem('sidebar')) {
+      localStorage.setItem('sidebar', 'header')
+    } else if (localStorage.getItem('sidebar') === 'aside') {
+      asideRef?.current?.classList.remove('hidden')
+      headerRef?.current?.classList.add('hidden')
+    } else {
+      asideRef?.current?.classList.add('hidden')
+    }
+    
   }, [])
 
 
   return (
     <>
-      <SideBar type="header" innerRef={headerRef} isHidden={isHeader} refIconPrint={headerIconPrintRef} setToggleStage={setToggleStage} toggleStage={toggleStage}  />
-      <SideBar type="aside" innerRef={asideRef} isHidden={isHeader} refIconPrint={asideIconPrintRef} setToggleStage={setToggleStage} toggleStage={toggleStage}  />
+      <SideBar type="header" innerRef={headerRef} refIconPrint={headerIconPrintRef} setToggleStage={setToggleStage} toggleStage={toggleStage}  />
+      <SideBar type="aside" innerRef={asideRef} refIconPrint={asideIconPrintRef} setToggleStage={setToggleStage} toggleStage={toggleStage}  />
       
 
       {toggleStage === STAGES[0] && <Settings asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
-      {toggleStage === STAGES[1] && <Shop asideRef={asideRef} headerRef={headerRef} headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} setToggleStage={setToggleStage} />}
+      {toggleStage === STAGES[1] && <Shop headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} setToggleStage={setToggleStage} />}
       {toggleStage === STAGES[2] && <Cart headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
       {toggleStage === STAGES[3] && <Farm headerIconPrintRef={headerIconPrintRef} asideIconPrintRef={asideIconPrintRef} />}
     </>

@@ -10,7 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext"
 import { SibeBarRefs } from "../../@types/web"
 
 
-const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
+const Shop = ({ asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
@@ -39,16 +39,6 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
     // console.log(carrossel.current?.scrollWidth, carrossel.current?.offsetWidth)
     if (carousel?.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
-    }
-
-    // Colocar o sidebar type no localstorage caso ñ tenha
-    if (!localStorage.getItem('sidebar')) {
-      localStorage.setItem('sidebar', 'header')
-    } else if (localStorage.getItem('sidebar') === 'aside') {
-      asideRef?.current?.classList.remove('hidden')
-      headerRef?.current?.classList.add('hidden')
-    } else {
-      asideRef?.current?.classList.add('hidden')
     }
 
     // Hide IconPrint from Sidebar
@@ -105,6 +95,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
 
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
       <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">- Bem-vindo(a) 😁 !</h1>
+
 
       {/* SEARCH QUERY */}
       <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">

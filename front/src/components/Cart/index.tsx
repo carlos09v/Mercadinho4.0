@@ -61,7 +61,7 @@ const Cart = ({ asideIconPrintRef, headerIconPrintRef }: SibeBarRefs) => {
         <div className="absolute top-4 left-6">
           <h2 className="text-xl flex gap-2 border-b-2 border-purple-600 dark:border-purple-500 rounded-lg">- Você tem: <span className="font-semibold text-green-600 dark:text-blue-400 flex items-center justify-center gap-2">R$ {user?.cash.toFixed(2)} {<BsCashCoin className="fill-green-600 dark:fill-green-400" />}</span></h2>
         </div>
-        <h1 className="text-2xl mb-6 mt-4">O total dos seus produtos é <span className={clsx("font-bold", {
+        <h1 className="text-2xl mb-6 mt-8">O total dos seus produtos é <span className={clsx("font-bold", {
           ["text-red-500 dark:text-red-500"]: totProd > user!.cash,
           ["text-green-600 dark:text-green-400"]: totProd <= user!.cash
         })}>R$ {totProd.toFixed(2)}</span> !</h1>

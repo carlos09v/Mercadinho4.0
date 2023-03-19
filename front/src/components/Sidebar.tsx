@@ -38,12 +38,12 @@ const SideBarBody = ({ icon, text = 'Vazio', to, styleTooltip, isActive = false,
   )
 }
 
-const SideBar = ({ type, innerRef, refIconPrint, isHidden, toggleStage, setToggleStage }: SideBarIconProps) => {
+const SideBar = ({ type, innerRef, refIconPrint, toggleStage, setToggleStage }: SideBarIconProps) => {
 
   return (
     <>
       {type === 'header' ? (
-        <header ref={innerRef} className={`nav mx-auto flex justify-center items-center rounded-b-full max-w-3xl border-b-2 w-[90%] ${isHidden && "hidden"}`} >
+        <header ref={innerRef} className="nav mx-auto flex justify-center items-center rounded-b-full max-w-3xl border-b-2 w-[90%]" >
           <SideBarBody type='header' icon={<BiLogOut />} style="sidebar-logout" styleTooltip="sidebar-logout-tooltip" deleteCookie text="SAIR" to='/' />
           <SideBarBody type='header' icon={<FiHome />} text="Home" to='/' />
           <button onClick={() => setToggleStage!('Shop')}>
@@ -64,7 +64,7 @@ const SideBar = ({ type, innerRef, refIconPrint, isHidden, toggleStage, setToggl
           </button>
         </header>
       ) : (
-        <aside ref={innerRef} className={`nav fixed top-0 left-0 h-screen px-4 flex flex-col border-r-2 ${isHidden && "hidden"}`}>
+        <aside ref={innerRef} className="nav fixed top-0 left-0 h-screen px-4 flex flex-col border-r-2">
           <SideBarBody type='aside' icon={<BiLogOut />} style="sidebar-logout" styleTooltip="sidebar-logout-tooltip" deleteCookie text="SAIR" to='/' />
           <SideBarBody type='aside' icon={<FiHome />} text="Home" to='/' />
           <button onClick={() => setToggleStage!('Shop')}>
