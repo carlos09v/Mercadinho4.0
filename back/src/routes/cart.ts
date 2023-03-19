@@ -51,7 +51,7 @@ export const cartRoutes = async(fastify: FastifyInstance) => {
         // Validar os dados pra ser tratado antes de enviar pro DB (utilizando o zod)
         const createCartBody = z.object({
             productName: z.string().min(2).max(16).trim(),
-            productPrice: z.number().positive(),
+            productPrice: z.number().positive().max(1000000, 'Max value is 1000000'),
             category: z.enum([Clothes, Eletronics, Food, Fruits, House, Video_Games, Others, Sports])
         })
         const { productName, productPrice, category } = createCartBody.parse(req.body)

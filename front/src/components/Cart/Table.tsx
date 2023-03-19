@@ -61,7 +61,7 @@ const Table = ({ hideDelete = false }: { hideDelete?: boolean }) => {
                                     {!hideDelete && !loading && (
                                         <td className="absolute ml-3 rounded p-2 bg-red-500 cursor-pointer hover:scale-105 duration-300 group" onClick={e => deleteProduct(e, prod.id)}>
                                             <AiFillDelete className="fill-white/90 hover:fill-white text-lg duration-300" />
-                                            <span className="deleteProduct-tooltip group-hover:scale-100 left-12 top-0">Excluir</span>
+                                            <span className="deleteProduct-tooltip group-hover:scale-100 left-12 top-0" >Excluir</span>
                                         </td>
                                     )}
                                 </tr>

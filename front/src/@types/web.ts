@@ -14,7 +14,6 @@ type SideBarIconProps = {
     refIconPrint?: React.RefObject<HTMLButtonElement>
     setToggleStage?: (value: React.SetStateAction<string>) => void
     toggleStage?: string
-    isHidden?: boolean
 }
 
 

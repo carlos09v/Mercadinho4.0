@@ -10,7 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext"
 import { SibeBarRefs } from "../../@types/web"
 
 
-const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
+const Shop = ({ asideIconPrintRef, headerIconPrintRef, setToggleStage }: SibeBarRefs) => {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
@@ -39,16 +39,6 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
     // console.log(carrossel.current?.scrollWidth, carrossel.current?.offsetWidth)
     if (carousel?.current) {
       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
-    }
-
-    // Colocar o sidebar type no localstorage caso ñ tenha
-    if (!localStorage.getItem('sidebar')) {
-      localStorage.setItem('sidebar', 'header')
-    } else if (localStorage.getItem('sidebar') === 'aside') {
-      asideRef?.current?.classList.remove('hidden')
-      headerRef?.current?.classList.add('hidden')
-    } else {
-      asideRef?.current?.classList.add('hidden')
     }
 
     // Hide IconPrint from Sidebar
@@ -106,8 +96,9 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
       {/* <motion.h1 animate={{ x: 200, y: 100 }}>Bem-vindo(a) 😁 !</motion.h1> */}
       <h1 className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 !max-w-sm mb-5 self-start">- Bem-vindo(a) 😁 !</h1>
 
+
       {/* SEARCH QUERY */}
-      <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
+      {/* <form onSubmit={getDataAPI} className="flex items-center justify-center gap-6">
         <Input
           id="search"
           placeholder="Procurar produto..."
@@ -117,10 +108,10 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         />
 
         <button type="submit" className="bg-green-600 !w-[100px] mb-4">Enviar</button>
-      </form>
+      </form> */}
 
       {/* FILTER */}
-      {search.length > 0 && (
+      {/* {search.length > 0 && (
         <div className="w-[25%]">
           <Input
             id="filter"
@@ -130,7 +121,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
             value={filter}
           />
         </div>
-      )}
+      )} */}
 
 
       {/* <motion.div ref={carousel} whileTap={{ cursor: 'grabbing' }} className="cursor-grab overflow-hidden">
@@ -167,7 +158,7 @@ const Shop = ({ asideRef, headerRef, asideIconPrintRef, headerIconPrintRef, setT
         </motion.div>
       </motion.div> */}
 
-      <span className="font-semibold text-lg underline text-black dark:text-gray-200">OU</span>
+      <span className="font-semibold text-lg underline text-black dark:text-gray-200">- Em breve...</span>
 
       <div className="register-container !min-h-[270px] mt-3 relative max-w-[95%]">
         <h1 className="!text-2xl dark:text-white border-green-600 dark:border-green-400 mb-6">Adicionar produto</h1>
