@@ -22,6 +22,7 @@
         <li>Fastify: @fastify/cors - @fastify/jwt</li>
         <li>Prisma: @prisma/client - prisma-erd-generator - @mermaid-js/mermaid-cli</li>
         <li>zod</li>
-        <li>PlanetScale</li>
+        <li>PlanetScale (HostedDB - Free Plan)</li>
+        <li>OnRender (HostedServer - Free Plan)</li>
     </ul>
 💚</p>
